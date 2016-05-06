@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 
+import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -32,5 +34,11 @@ public class ApplicationModule {
     @Singleton
     Context provideContext() {
         return mApp.getApplicationContext();
+    }
+
+    @Provides
+    @Singleton
+    PreferencesUtils providePrefUtils() {
+        return new PreferencesUtils(mApp);
     }
 }

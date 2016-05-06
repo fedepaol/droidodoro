@@ -5,9 +5,9 @@ package com.whiterabbit.droidodoro.inject;
  */
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.whiterabbit.droidodoro.DroidodoroApplication;
+import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 
 
 import javax.inject.Singleton;
@@ -18,7 +18,7 @@ import dagger.Component;
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
     void inject(DroidodoroApplication app);
-    SharedPreferences getSharedPrefs();
+    PreferencesUtils getPrefUtils();
     Context getContext();
 }
 
