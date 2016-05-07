@@ -12,10 +12,17 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
     public ConfigurationPresenterImpl(ConfigurationView v, PreferencesUtils prefUtils) {
         mView = v;
         mPreferences = prefUtils;
-        if (mPreferences.getAuthToken().equals("")) {
-            mView.toggleLogin(true);
+    }
 
-            mView.askForToken();
+    private void initNoToken() {
+        mView.toggleLogin(true);
+        mView.toggleListsSpinners(false);
+    }
+
+    @Override
+    public void initView() {
+        if (mPreferences.getAuthToken().equals("")) {
+            initNoToken();
         }
     }
 
@@ -32,7 +39,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
 
     @Override
     public void onLoginPressed() {
-
+        mView.askForToken();
     }
 
     @Override

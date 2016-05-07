@@ -8,8 +8,6 @@ public interface ConfigurationView {
 
     void toggleListsSpinners(boolean enable);
 
-    void toggleBoardsSpinners(boolean enable);
-
     void setBoards(String[] boards);
 
     void setTodos(String[] todos);
@@ -18,7 +16,7 @@ public interface ConfigurationView {
 
     void setDone(String[] done);
 
-    void showProgress(String message);
+    void showProgress(String message, boolean toggle);
 
     void askForToken();
 }

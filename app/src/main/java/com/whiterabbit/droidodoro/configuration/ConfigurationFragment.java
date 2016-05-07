@@ -19,8 +19,7 @@ import butterknife.OnClick;
 
 
 public class ConfigurationFragment extends Fragment implements ConfigurationView {
-    @BindView(R.id.configuration_login)
-    Button login;
+    @BindView(R.id.configuration_login)  Button login;
 
     @Inject
     ConfigurationPresenter mPresenter;
@@ -39,8 +38,9 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View res = inflater.inflate(R.layout.configuration, container);
+        View res = inflater.inflate(R.layout.configuration, container, false);
         ButterKnife.bind(this, res);
+        mPresenter.initView();
         return res;
     }
 
@@ -65,11 +65,6 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     }
 
     @Override
-    public void toggleBoardsSpinners(boolean enable) {
-
-    }
-
-    @Override
     public void setBoards(String[] boards) {
 
     }
@@ -90,7 +85,7 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     }
 
     @Override
-    public void showProgress(String message) {
+    public void showProgress(String message, boolean toggle) {
 
     }
 
