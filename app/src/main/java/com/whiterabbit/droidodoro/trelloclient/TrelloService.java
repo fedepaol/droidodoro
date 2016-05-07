@@ -28,10 +28,10 @@ import retrofit2.http.Path;
 import rx.Observable;
 
 public interface TrelloService {
-    @GET("1/members/me/boards")
+    @GET("1/members/me/boards?ields=name,id")
     Observable<List<Board>> listMyBoards();
 
-    @GET("1/boards/{boardid}/lists")
+    @GET("1/boards/{boardid}/lists?fields=name,id")
     Observable<List<TrelloList>> getLists(@Path("boardid") String boardid);
 
 }
