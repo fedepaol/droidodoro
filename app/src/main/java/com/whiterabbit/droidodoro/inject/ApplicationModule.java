@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 
 
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.trelloclient.TrelloClient;
 
 import javax.inject.Singleton;
 
@@ -40,5 +41,11 @@ public class ApplicationModule {
     @Singleton
     PreferencesUtils providePrefUtils() {
         return new PreferencesUtils(mApp);
+    }
+
+    @Provides
+    @Singleton
+    TrelloClient provideTrelloClient() {
+        return new TrelloClient();
     }
 }

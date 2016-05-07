@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ConfigurationFragment extends Fragment implements ConfigurationView {
+public class ConfigurationFragment extends Fragment implements ConfigurationView, LoginFragment.LoginResult {
     @BindView(R.id.configuration_login)  Button login;
 
     @Inject
@@ -40,13 +40,17 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View res = inflater.inflate(R.layout.configuration, container, false);
         ButterKnife.bind(this, res);
-        mPresenter.initView();
         return res;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onPause() {
+        mPresenter.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        mPresenter.onResume();
     }
 
     @Override
@@ -56,7 +60,7 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     @OnClick(R.id.configuration_login)
     public void onLoginClicked() {
-
+        mPresenter.onLoginPressed();
     }
 
     @Override
@@ -91,6 +95,17 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     @Override
     public void askForToken() {
+        LoginFragment l = LoginFragment.newInstance(this);
+        l.show(getActivity().getSupportFragmentManager(), "logindialog");
+    }
 
+    @Override
+    public void onTokenFound(String token) {
+        mPresenter.onTokenReceived(token);
+    }
+
+    @Override
+    public void onLoginError(String message) {
+        mPresenter.onTokenError(message);
     }
 }
