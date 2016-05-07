@@ -1,11 +1,13 @@
 package com.whiterabbit.droidodoro.configuration;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
@@ -29,6 +31,8 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     @Inject
     ConfigurationPresenter mPresenter;
+    @Inject
+    Context mContext;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +82,10 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     @Override
     public void setBoards(String[] boards) {
-
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(mContext,
+                                                        android.R.layout.simple_spinner_item, boards);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBoardsSpinner.setAdapter(spinnerArrayAdapter);
     }
 
     @Override
