@@ -66,7 +66,7 @@ public class LoginFragment extends DialogFragment {
             // https://trello.com/1/token/com.whiterabbit#token=TOKEN
             Uri uri = Uri.parse(url);
             String fragment = uri.getFragment();
-            if (fragment.startsWith("token")) {
+            if (fragment != null && fragment.startsWith("token")) {
                 String token = fragment.split("=")[1];
                 if (token != null) {
                     mAuthFound = true;

@@ -73,7 +73,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
                 .subscribe(b -> mBoards.add(b),
                            e -> {
                                this.onTrelloError(e.getMessage());
-                               //mView.showProgress(0, false);
+                               mView.showProgress(0, false);
                            }, () -> {
                                 this.onBoardsComplete();
                                 mView.showProgress(0, false);
