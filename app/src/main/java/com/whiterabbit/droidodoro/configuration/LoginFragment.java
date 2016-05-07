@@ -104,7 +104,7 @@ public class LoginFragment extends DialogFragment {
     @Override
     public void onViewCreated(View arg0, Bundle arg1) {
         super.onViewCreated(arg0, arg1);
-        //load the url of the oAuth login page
+        //load the url of the oAuth mLogin page
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
                 .authority("trello.com")

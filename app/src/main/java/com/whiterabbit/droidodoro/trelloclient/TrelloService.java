@@ -28,7 +28,7 @@ import retrofit2.http.Path;
 import rx.Observable;
 
 public interface TrelloService {
-    @GET("1/boards/")
+    @GET("1/boards")
     Observable<List<Board>> listMyBoards();
 
     @GET("boards/{boardid}/lists")

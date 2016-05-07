@@ -16,7 +16,7 @@ public interface ConfigurationView {
 
     void setDone(String[] done);
 
-    void showProgress(String message, boolean toggle);
+    void showProgress(int message, boolean toggle);
 
     void askForToken();
 }

@@ -1,5 +1,8 @@
 package com.whiterabbit.droidodoro.configuration;
 
+import android.content.Context;
+
+import com.whiterabbit.droidodoro.R;
 import com.whiterabbit.droidodoro.model.Board;
 import com.whiterabbit.droidodoro.model.TrelloList;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
@@ -9,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
 public class ConfigurationPresenterImpl implements ConfigurationPresenter {
+    /* helper class to be filled with a board and related lists */
     private static class BoardList {
         private Board board;
         private List<TrelloList> lists;
@@ -36,6 +41,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
     private PreferencesUtils mPreferences;
     private TrelloClient mTrello;
     private ArrayList<BoardList> mBoards;
+    private Subscription mBoardsSubscription;
 
     public ConfigurationPresenterImpl(ConfigurationView v,
                                       TrelloClient trello,
@@ -52,25 +58,35 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
     }
 
     private void initToken() {
-        if (mBoards.size() > 0) {
+        mView.toggleLogin(false);
+        if (mBoards.size() > 0) { // already have the boards filled
             onBoardsComplete();
             return;
         }
-
-        mTrello.getBoards()
+        mView.showProgress(R.string.config_fetching_boards, true);
+        mBoardsSubscription = mTrello.getBoards()
                 .flatMap(Observable::from)
                 .flatMap(b -> mTrello.getLists(b.getId())
                               .map(l -> new BoardList(b, l)))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(b -> mBoards.add(b),
-                           e -> this.onTrelloError(e.getMessage()),
-                           this::onBoardsComplete
-                );
+                           e -> {
+                               this.onTrelloError(e.getMessage());
+                               //mView.showProgress(0, false);
+                           }, () -> {
+                                this.onBoardsComplete();
+                                mView.showProgress(0, false);
+                            });
     }
 
     private void onBoardsComplete() {
-
+        String boards[] = new String[mBoards.size()];
+        int i = 0;
+        for (BoardList b : mBoards) {
+            boards[i++] = b.getBoard().getName();
+        }
+        mView.setBoards(boards);
     }
 
     private void onTrelloError(String message) {
@@ -88,7 +104,9 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
 
     @Override
     public void onPause() {
-
+        if (mBoardsSubscription != null) {
+            mBoardsSubscription.unsubscribe();
+        }
     }
 
     @Override

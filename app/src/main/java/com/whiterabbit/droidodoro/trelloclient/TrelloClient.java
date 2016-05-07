@@ -28,20 +28,22 @@ import com.whiterabbit.droidodoro.model.TrelloList;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
 public class TrelloClient {
-    @Inject
     PreferencesUtils mPreferences;
 
     private TrelloService mClient;
@@ -52,24 +54,26 @@ public class TrelloClient {
         return builder.create();
     }
 
-    public TrelloClient() {
-        OkHttpClient client = new OkHttpClient();
-        client.interceptors().add(chain -> {
-            Request original = chain.request();
-            Log.d("FEDE", original.url().toString());
-            HttpUrl newUrl = original.url().newBuilder()
-                                  .addQueryParameter("key", Keys.TRELLO_KEY)
-                                  .addQueryParameter("token", mPreferences.getAuthToken()).build();
+    public TrelloClient(PreferencesUtils preferences) {
+        mPreferences = preferences;
+        OkHttpClient okClient = new OkHttpClient.Builder()
+                                .addInterceptor(chain -> {
+                                    Request original = chain.request();
+                                    Log.d("FEDE", original.url().toString());
+                                    HttpUrl newUrl = original.url().newBuilder()
+                                            .addQueryParameter("key", Keys.TRELLO_KEY)
+                                            .addQueryParameter("token", mPreferences.getAuthToken()).build();
 
-            Request enhancedRequest = original.newBuilder()
+                                    Request enhancedRequest = original.newBuilder()
                                             .url(newUrl).build();
-            Log.d("FEDE", enhancedRequest.url().toString());
-            return chain.proceed(enhancedRequest);
-        });
+                                    Log.d("FEDE", enhancedRequest.url().toString());
+                                    return chain.proceed(enhancedRequest);
+                                }).build();
+
 
         mClient = new Retrofit.Builder()
-                              .baseUrl("http://api.openweathermap.org/data/2.5/")
-                              .client(client)
+                              .baseUrl("https://api.trello.com/")
+                              .client(okClient)
                               .addConverterFactory(GsonConverterFactory.create(getGSon()))
                               .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                               .build()

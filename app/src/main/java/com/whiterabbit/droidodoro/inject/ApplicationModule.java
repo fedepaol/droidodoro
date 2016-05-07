@@ -45,7 +45,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    TrelloClient provideTrelloClient() {
-        return new TrelloClient();
+    TrelloClient provideTrelloClient(PreferencesUtils u) {
+        return new TrelloClient(u);
     }
 }

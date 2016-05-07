@@ -8,6 +8,7 @@ import android.content.Context;
 
 import com.whiterabbit.droidodoro.DroidodoroApplication;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.trelloclient.TrelloClient;
 
 
 import javax.inject.Singleton;
@@ -19,6 +20,7 @@ import dagger.Component;
 public interface ApplicationComponent {
     void inject(DroidodoroApplication app);
     PreferencesUtils getPrefUtils();
+    TrelloClient getTrelloClient();
     Context getContext();
 }
 

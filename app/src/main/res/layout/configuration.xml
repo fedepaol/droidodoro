@@ -9,4 +9,24 @@
         android:text="@string/config_login"
         android:id="@+id/configuration_login"/>
 
+    <Spinner
+        android:id="@+id/configuration_boards"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/configuration_todo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/configuration_doing"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/configuration_done"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

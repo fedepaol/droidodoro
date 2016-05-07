@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import com.whiterabbit.droidodoro.DroidodoroApplication;
 import com.whiterabbit.droidodoro.R;
@@ -19,7 +20,12 @@ import butterknife.OnClick;
 
 
 public class ConfigurationFragment extends Fragment implements ConfigurationView, LoginFragment.LoginResult {
-    @BindView(R.id.configuration_login)  Button login;
+    @BindView(R.id.configuration_login)  Button mLogin;
+    @BindView(R.id.configuration_boards) Spinner mBoardsSpinner;
+    @BindView(R.id.configuration_todo) Spinner mTodoSpinner;
+    @BindView(R.id.configuration_doing) Spinner mDoingSpinner;
+    @BindView(R.id.configuration_done) Spinner mDoneSpinner;
+
 
     @Inject
     ConfigurationPresenter mPresenter;
@@ -45,17 +51,19 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     @Override
     public void onPause() {
+        super.onPause();
         mPresenter.onPause();
     }
 
     @Override
     public void onResume() {
+        super.onResume();
         mPresenter.onResume();
     }
 
     @Override
     public void toggleLogin(boolean enable) {
-        login.setEnabled(enable);
+        mLogin.setEnabled(enable);
     }
 
     @OnClick(R.id.configuration_login)
@@ -89,7 +97,12 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     }
 
     @Override
-    public void showProgress(String message, boolean toggle) {
+    public void showProgress(int message, boolean toggle) {
+        if (!toggle) {
+            // TODO Hide progress
+            return;
+        }
+        String m = getString(message);
 
     }
 

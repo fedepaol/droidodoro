@@ -2,4 +2,6 @@
     <string name="app_name">Droidodoro</string>
     <!-- CONFIGURATION -->
     <string name="config_login">Login</string>
+    <string name="config_fetching_boards">Fetching boards..</string>
+
 </resources>
