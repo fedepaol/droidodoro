@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -21,7 +22,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ConfigurationFragment extends Fragment implements ConfigurationView, LoginFragment.LoginResult {
+public class ConfigurationFragment extends Fragment implements ConfigurationView,
+                                                               LoginFragment.LoginResult,
+                                                               AdapterView.OnItemSelectedListener {
     @BindView(R.id.configuration_login)  Button mLogin;
     @BindView(R.id.configuration_boards) Spinner mBoardsSpinner;
     @BindView(R.id.configuration_todo) Spinner mTodoSpinner;
@@ -50,6 +53,7 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View res = inflater.inflate(R.layout.configuration, container, false);
         ButterKnife.bind(this, res);
+        mBoardsSpinner.setOnItemSelectedListener(this);
         return res;
     }
 
@@ -80,27 +84,31 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     }
 
+    private void setSpinnerValues(Spinner s, String[] values) {
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(mContext,
+                R.layout.config_spinner_item, values);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        s.setAdapter(spinnerArrayAdapter);
+    }
+
     @Override
     public void setBoards(String[] boards) {
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(mContext,
-                                                        android.R.layout.simple_spinner_item, boards);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mBoardsSpinner.setAdapter(spinnerArrayAdapter);
+        setSpinnerValues(mBoardsSpinner, boards);
     }
 
     @Override
     public void setTodos(String[] todos) {
-
+        setSpinnerValues(mTodoSpinner, todos);
     }
 
     @Override
     public void setDoing(String[] doing) {
-
+        setSpinnerValues(mDoingSpinner, doing);
     }
 
     @Override
     public void setDone(String[] done) {
-
+        setSpinnerValues(mDoneSpinner, done);
     }
 
     @Override
@@ -120,6 +128,26 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     }
 
     @Override
+    public int getBoardPosition() {
+        return mBoardsSpinner.getSelectedItemPosition();
+    }
+
+    @Override
+    public int getTodoPosition() {
+        return mTodoSpinner.getSelectedItemPosition();
+    }
+
+    @Override
+    public int getDoingPosition() {
+        return mDoingSpinner.getSelectedItemPosition();
+    }
+
+    @Override
+    public int getDonePosition() {
+        return mDoneSpinner.getSelectedItemPosition();
+    }
+
+    @Override
     public void onTokenFound(String token) {
         mPresenter.onTokenReceived(token);
     }
@@ -128,4 +156,16 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     public void onLoginError(String message) {
         mPresenter.onTokenError(message);
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        mPresenter.onBoardUpdated();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+
 }

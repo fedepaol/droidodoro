@@ -87,6 +87,24 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
             boards[i++] = b.getBoard().getName();
         }
         mView.setBoards(boards);
+        updateListsFromBoard();
+    }
+
+    private void updateListsFromBoard() {
+        BoardList b = mBoards.get(mView.getBoardPosition());
+        List<TrelloList> l = b.getLists();
+        String[] lists = new String[l.size()];
+        for (int i = 0; i < lists.length; i++) {
+            lists[i] = l.get(i).getName();
+        }
+        mView.setTodos(lists);
+        mView.setDoing(lists);
+        mView.setDone(lists);
+    }
+
+    @Override
+    public void onBoardUpdated() {
+        updateListsFromBoard();
     }
 
     private void onTrelloError(String message) {
@@ -125,18 +143,4 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
         mView.askForToken();
     }
 
-    @Override
-    public void onTodoSelected(int position) {
-
-    }
-
-    @Override
-    public void onDoingSelected(int position) {
-
-    }
-
-    @Override
-    public void onDoneSelected(int position) {
-
-    }
 }

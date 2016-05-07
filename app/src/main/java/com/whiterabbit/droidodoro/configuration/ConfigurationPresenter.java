@@ -7,10 +7,7 @@ public interface ConfigurationPresenter {
     void onTokenReceived(String token);
     void onTokenError(String error);
     void onLoginPressed();
-    void onTodoSelected(int position);
-    void onDoingSelected(int position);
-    void onDoneSelected(int position);
-
     void onPause();
     void onResume();
+    void onBoardUpdated();
 }

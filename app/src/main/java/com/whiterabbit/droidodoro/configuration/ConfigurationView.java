@@ -19,4 +19,12 @@ public interface ConfigurationView {
     void showProgress(int message, boolean toggle);
 
     void askForToken();
+
+    int getBoardPosition();
+
+    int getTodoPosition();
+
+    int getDoingPosition();
+
+    int getDonePosition();
 }
