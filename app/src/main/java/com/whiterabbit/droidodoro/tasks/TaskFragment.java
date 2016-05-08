@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.whiterabbit.droidodoro.DroidodoroApplication;
 import com.whiterabbit.droidodoro.R;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.storage.TasksProvider;
 
 import javax.inject.Inject;
@@ -28,11 +29,13 @@ import butterknife.ButterKnife;
 
 
 public abstract class TaskFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>,TasksAdapter.TaskSelectedCallback {
     @Inject
     PreferencesUtils mPreferences;
     @Inject
     Context mContext;
+    @Inject
+    TaskProviderClientExt mProviderClient;
 
     @BindView(R.id.tasks_list) RecyclerView mTasksList;
     TasksAdapter mAdapter;
@@ -58,7 +61,7 @@ public abstract class TaskFragment extends Fragment implements
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         mTasksList.setLayoutManager(layoutManager);
         mTasksList.setNestedScrollingEnabled(false);
-        mAdapter = new TasksAdapter(mContext);
+        mAdapter = new TasksAdapter(mContext, this);
         mTasksList.setAdapter(mAdapter);
         getActivity().getSupportLoaderManager().initLoader(getLoaderId(), null, this);
     }
@@ -88,4 +91,10 @@ public abstract class TaskFragment extends Fragment implements
     abstract String getListId();
 
     abstract int getLoaderId();
+
+    @Override
+    public void onTaskSelected(String taskId) {
+        // do nothing by default, will be implemented only in
+        // todo tasks.
+    }
 }

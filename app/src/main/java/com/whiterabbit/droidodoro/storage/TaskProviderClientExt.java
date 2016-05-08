@@ -1,8 +1,10 @@
 package com.whiterabbit.droidodoro.storage;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 
 import com.whiterabbit.droidodoro.model.Card;
 
@@ -35,5 +37,16 @@ public class TaskProviderClientExt {
     public int removeAllTask(){
         ContentResolver cr = mContext.getContentResolver();
         return cr.delete(TasksProvider.TASK_URI, null, null);
+    }
+
+    public int moveTaskToOtherList(String taskId, String doingListId) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TasksProvider.TASK_LIST_COLUMN, doingListId);
+        contentValues.put(TasksProvider.TASK_TOSYNCH_COLUMN, 1);
+
+        ContentResolver cr = mContext.getContentResolver();
+        String where = TasksProvider.TASK_IDENTIFIER_COLUMN + " = ?";
+        String[] whereArgs = {taskId};
+        return cr.update(TasksProvider.TASK_URI, contentValues, where, whereArgs);
     }
 }

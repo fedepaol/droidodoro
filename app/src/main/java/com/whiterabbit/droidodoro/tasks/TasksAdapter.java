@@ -13,28 +13,42 @@ import com.whiterabbit.droidodoro.storage.TasksProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> {
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public long _id;
-        public boolean mIsFavourite;
+    public interface TaskSelectedCallback {
+        void onTaskSelected(String taskId);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.task_name) TextView mName;
         @BindView(R.id.task_time) TextView mTimeSpent;
         @BindView(R.id.task_pomodoros) TextView mPomodoros;
         String mTaskId;
+        TaskSelectedCallback mCallBack;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, TaskSelectedCallback c) {
             super(v);
             ButterKnife.bind(this, v);
+            mCallBack = c;
+
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mCallBack.onTaskSelected(mTaskId);
         }
     }
 
     Cursor mTasks;
     Context mContext;
+    TaskSelectedCallback mCallback;
 
-    public TasksAdapter(Context c) {
+    public TasksAdapter(Context c, TaskSelectedCallback callback) {
         mContext = c;
+        mCallback = callback;
     }
 
     @Override
@@ -42,7 +56,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
                                                             int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.task_elem, parent, false);
-        ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v, mCallback);
         return vh;
     }
 
