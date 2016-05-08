@@ -8,6 +8,8 @@ public interface ConfigurationView {
 
     void toggleListsSpinners(boolean enable);
 
+    void toggleImport(boolean enable);
+
     void setBoards(String[] boards);
 
     void setTodos(String[] todos);
@@ -29,4 +31,6 @@ public interface ConfigurationView {
     int getDonePosition();
 
     void notifyError(int stringId);
+
+    void notifyError(String message);
 }

@@ -60,12 +60,15 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
     private void initNoToken() {
         mView.toggleLogin(true);
         mView.toggleListsSpinners(false);
+        mView.toggleImport(false);
     }
 
     private void initToken() {
         mView.toggleLogin(false);
         if (mBoards.size() > 0) { // already have the boards filled
             onBoardsComplete();
+            mView.toggleImport(true);
+            mView.toggleListsSpinners(true);
             return;
         }
         mView.showProgress(R.string.config_fetching_boards, true);
@@ -82,7 +85,9 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
                            }, () -> {
                                 this.onBoardsComplete();
                                 mView.showProgress(0, false);
-                            });
+                                mView.toggleImport(true);
+                                mView.toggleListsSpinners(true);
+                        });
     }
 
     private void onBoardsComplete() {
@@ -113,7 +118,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
     }
 
     private void onTrelloError(String message) {
-
+        mView.notifyError(message);
     }
 
     @Override

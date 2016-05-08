@@ -2,7 +2,6 @@ package com.whiterabbit.droidodoro.configuration;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -29,6 +28,7 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
                                                                LoginFragment.LoginResult,
                                                                AdapterView.OnItemSelectedListener {
     @BindView(R.id.configuration_login)  Button mLogin;
+    @BindView(R.id.configuration_import) Button mImport;
     @BindView(R.id.configuration_boards) Spinner mBoardsSpinner;
     @BindView(R.id.configuration_todo) Spinner mTodoSpinner;
     @BindView(R.id.configuration_doing) Spinner mDoingSpinner;
@@ -93,6 +93,11 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     @Override
     public void toggleListsSpinners(boolean enable) {
 
+    }
+
+    @Override
+    public void toggleImport(boolean enable) {
+        mImport.setEnabled(enable);
     }
 
     private void setSpinnerValues(Spinner s, String[] values) {
@@ -186,7 +191,12 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     @Override
     public void notifyError(int stringId) {
+        notifyError(getString(stringId));
+    }
+
+    @Override
+    public void notifyError(String message) {
         Snackbar.make(getView(),
-                      getString(stringId), Snackbar.LENGTH_LONG).show();
+                message, Snackbar.LENGTH_LONG).show();
     }
 }
