@@ -17,16 +17,16 @@ import butterknife.ButterKnife;
 public class TasksActivity extends AppCompatActivity {
     @BindView(R.id.tasks_tabs) TabLayout mTabs;
     @BindView(R.id.tasks_activity_pager) ViewPager mPager;
-    private PagerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.tasks_activity);
         ButterKnife.bind(this);
 
-        mAdapter = new PagerAdapter(getSupportFragmentManager(), getApplicationContext());
+        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), getApplicationContext());
         mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs));
-        mPager.setAdapter(mAdapter);
+        mPager.setAdapter(pagerAdapter);
         mTabs.setupWithViewPager(mPager);
     }
 
@@ -39,14 +39,18 @@ public class TasksActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 1;
+            return 3;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-
+                    return new TaskFragment();
+                case 1:
+                    return new TaskFragment();
+                case 2:
+                    return new TaskFragment();
             }
             return null;
         }
@@ -56,6 +60,10 @@ public class TasksActivity extends AppCompatActivity {
             switch(position) {
                 case 0:
                     return mContext.getString(R.string.tasks_todo);
+                case 1:
+                    return mContext.getString(R.string.tasks_doing);
+                case 2:
+                    return mContext.getString(R.string.tasks_done);
             }
             return "";
         }
