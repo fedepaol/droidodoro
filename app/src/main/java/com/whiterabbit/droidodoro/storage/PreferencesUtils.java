@@ -17,13 +17,18 @@ public class PreferencesUtils {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(c);
     }
 
-    public void setAuthToken(String token) {
+    private void setString(String name, String value) {
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString(TOKEN_ID, token);
+        editor.putString(name, value);
         editor.apply();
+    }
+
+    public void setAuthToken(String token) {
+        setString(TOKEN_ID, token);
     }
 
     public String getAuthToken() {
         return mPreferences.getString(TOKEN_ID, "");
     }
+    
 }
