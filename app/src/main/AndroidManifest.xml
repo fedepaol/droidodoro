@@ -20,12 +20,14 @@
         <activity android:name=".configuration.ConfigurationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".tasks.TasksActivity"
-            android:theme="@style/AppTheme.ActionBarWithTabsTheme">
-        </activity>
+        <activity
+            android:name=".tasks.TasksActivity"
+            android:theme="@style/AppTheme.ActionBarWithTabsTheme"></activity>
+        <activity android:name=".timer.TimerActivity"></activity>
     </application>
 
 </manifest>

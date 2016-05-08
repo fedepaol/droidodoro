@@ -1,10 +1,8 @@
 package com.whiterabbit.droidodoro.storage;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.net.Uri;
 
 import com.whiterabbit.droidodoro.model.Card;
 

@@ -1,6 +1,10 @@
 package com.whiterabbit.droidodoro.tasks;
 
 
+import android.content.Intent;
+
+import com.whiterabbit.droidodoro.timer.TimerActivity;
+
 import rx.Observable;
 
 import rx.Subscription;
@@ -31,7 +35,8 @@ public class TodoTasksFragment extends TaskFragment {
     }
 
     private void startTimer(String taskId) {
-
+        Intent i = new Intent(mContext, TimerActivity.class);
+        i.putExtra(TimerActivity.TASK_PARAM, taskId);
     }
 
     private void onUpdateError(String errMessage) {
