@@ -7,9 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.whiterabbit.droidodoro.DroidodoroApplication;
 import com.whiterabbit.droidodoro.R;
 
-public class TimerFragment extends Fragment {
+import javax.inject.Inject;
+
+public class TimerFragment extends Fragment implements TimerView {
+    @Inject TimerPresenter mPresenter;
 
     private static final String TASK_PARAM = "task";
 
@@ -33,6 +37,13 @@ public class TimerFragment extends Fragment {
         if (getArguments() != null) {
             mTaskId = getArguments().getString(TASK_PARAM);
         }
+
+        DroidodoroApplication app = (DroidodoroApplication) getActivity().getApplication();
+
+        DaggerTimerComponent.builder()
+                .applicationComponent(app.getComponent())
+                .timerModule(new TimerModule(this))
+                .build().inject(this);
     }
 
     @Override
