@@ -158,6 +158,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
             todoIndx == doneIndx ||
             doingIndx == doneIndx) {
             mView.notifyError(R.string.config_different_lists);
+            return;
         }
         int boardIndx = mView.getBoardPosition();
         BoardList board = mBoards.get(boardIndx);
@@ -173,14 +174,15 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
             Reilies on the fact that map is performed in the subscription thread
          */
         Observable<Integer> o = Observable.fromCallable(mProviderClient::removeAllTask);
+        mView.showProgress(R.string.config_fetching_lists, true);
         o.flatMap(i -> mTrello.getCards(todoId))
                 .map(t -> this.storeCards(t, todoId))
                 .flatMap(b -> mTrello.getCards(doingId))
                 .map(d ->  this.storeCards(d, doingId))
                 .flatMap(b -> mTrello.getCards(doneId))
                 .map(done ->  this.storeCards(done, doneId))
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(b -> {
                     mPreferences.setTodoList(todoId);
                     mPreferences.setDoingList(doingId);

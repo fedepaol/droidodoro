@@ -1,5 +1,6 @@
 package com.whiterabbit.droidodoro.configuration;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -39,6 +40,8 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     @Inject
     Context mContext;
 
+    private ProgressDialog mProgressDialog;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,12 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
         ButterKnife.bind(this, res);
         mBoardsSpinner.setOnItemSelectedListener(this);
         return res;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mProgressDialog = new ProgressDialog(context);
     }
 
     @Override
@@ -116,11 +125,12 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     @Override
     public void showProgress(int message, boolean toggle) {
         if (!toggle) {
-            // TODO Hide progress
+            mProgressDialog.dismiss();
             return;
         }
         String m = getString(message);
-
+        mProgressDialog.setMessage(m);
+        mProgressDialog.show();
     }
 
     @Override
@@ -176,7 +186,7 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     @Override
     public void notifyError(int stringId) {
-        Snackbar.make(getView().findViewById(android.R.id.content),
-                      getString(stringId), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getView(),
+                      getString(stringId), Snackbar.LENGTH_LONG).show();
     }
 }

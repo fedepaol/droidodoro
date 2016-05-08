@@ -2,6 +2,7 @@ package com.whiterabbit.droidodoro.configuration;
 
 
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.trelloclient.TrelloClient;
 
 import dagger.Module;
@@ -23,7 +24,8 @@ public class ConfigModule {
     @Provides
     public ConfigurationPresenter provideConfigPresenter(ConfigurationView v,
                                                          TrelloClient t,
-                                                         PreferencesUtils u){
-        return new ConfigurationPresenterImpl(v, t, u);
+                                                         PreferencesUtils u,
+                                                         TaskProviderClientExt c){
+        return new ConfigurationPresenterImpl(v, t, u, c);
     }
 }

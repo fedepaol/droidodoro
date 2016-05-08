@@ -5,4 +5,6 @@
     <string name="config_fetching_boards">Fetching boards..</string>
     <string name="config_import">Import Boards</string>
     <string name="config_different_lists">The three chosen lists must be different from each other</string>
+    <string name="config_fetching_lists">Fetching lists..</string>
+
 </resources>

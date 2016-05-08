@@ -8,6 +8,7 @@ import android.content.Context;
 
 import com.whiterabbit.droidodoro.DroidodoroApplication;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.trelloclient.TrelloClient;
 
 
@@ -21,6 +22,7 @@ public interface ApplicationComponent {
     void inject(DroidodoroApplication app);
     PreferencesUtils getPrefUtils();
     TrelloClient getTrelloClient();
+    TaskProviderClientExt getProviderClient();
     Context getContext();
 }
 
