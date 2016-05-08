@@ -44,6 +44,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
     private TrelloClient mTrello;
     private ArrayList<BoardList> mBoards;
     private Subscription mBoardsSubscription;
+    private Subscription mCardsSubscription;
     private TaskProviderClientExt mProviderClient;
 
     public ConfigurationPresenterImpl(ConfigurationView v,
@@ -135,6 +136,9 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
         if (mBoardsSubscription != null) {
             mBoardsSubscription.unsubscribe();
         }
+        if (mCardsSubscription != null) {
+            mCardsSubscription.unsubscribe();
+        }
     }
 
     @Override
@@ -180,7 +184,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
          */
         Observable<Integer> o = Observable.fromCallable(mProviderClient::removeAllTask);
         mView.showProgress(R.string.config_fetching_lists, true);
-        o.flatMap(i -> mTrello.getCards(todoId))
+        mCardsSubscription = o.flatMap(i -> mTrello.getCards(todoId))
                 .map(t -> this.storeCards(t, todoId))
                 .flatMap(b -> mTrello.getCards(doingId))
                 .map(d ->  this.storeCards(d, doingId))
