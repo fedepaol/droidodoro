@@ -51,6 +51,7 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
                 .applicationComponent(app.getComponent())
                 .configModule(new ConfigModule(this))
                 .build().inject(this);
+        setRetainInstance(true);
     }
 
     @Nullable

@@ -7,4 +7,8 @@
     <string name="config_different_lists">The three chosen lists must be different from each other</string>
     <string name="config_fetching_lists">Fetching lists..</string>
 
+    <!-- TASKS -->
+    <string name="tasks_todo">Todo</string>
+
+
 </resources>
