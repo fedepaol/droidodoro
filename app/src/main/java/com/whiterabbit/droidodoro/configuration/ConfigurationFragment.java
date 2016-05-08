@@ -2,6 +2,7 @@ package com.whiterabbit.droidodoro.configuration;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,7 @@ import android.widget.Spinner;
 
 import com.whiterabbit.droidodoro.DroidodoroApplication;
 import com.whiterabbit.droidodoro.R;
+import com.whiterabbit.droidodoro.tasks.TasksActivity;
 
 import javax.inject.Inject;
 
@@ -199,5 +201,11 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     public void notifyError(String message) {
         Snackbar.make(getView(),
                 message, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void goToTasks() {
+        Intent i = new Intent(mContext, TasksActivity.class);
+        startActivity(i);
     }
 }

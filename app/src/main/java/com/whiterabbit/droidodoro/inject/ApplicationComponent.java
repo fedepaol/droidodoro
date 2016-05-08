@@ -9,6 +9,7 @@ import android.content.Context;
 import com.whiterabbit.droidodoro.DroidodoroApplication;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
+import com.whiterabbit.droidodoro.tasks.TaskFragment;
 import com.whiterabbit.droidodoro.trelloclient.TrelloClient;
 
 
@@ -20,6 +21,7 @@ import dagger.Component;
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
     void inject(DroidodoroApplication app);
+    void inject(TaskFragment fragment);
     PreferencesUtils getPrefUtils();
     TrelloClient getTrelloClient();
     TaskProviderClientExt getProviderClient();

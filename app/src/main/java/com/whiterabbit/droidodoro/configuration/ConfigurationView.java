@@ -33,4 +33,6 @@ public interface ConfigurationView {
     void notifyError(int stringId);
 
     void notifyError(String message);
+
+    void goToTasks();
 }

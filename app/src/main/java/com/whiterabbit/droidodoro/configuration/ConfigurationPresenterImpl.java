@@ -206,6 +206,6 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
     }
 
     private void onSetupComplete() {
-
+        mView.goToTasks();
     }
 }

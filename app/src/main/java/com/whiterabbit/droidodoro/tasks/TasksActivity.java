@@ -46,11 +46,11 @@ public class TasksActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new TaskFragment();
+                    return new TodoTasksFragment();
                 case 1:
-                    return new TaskFragment();
+                    return new DoingTasksFragment();
                 case 2:
-                    return new TaskFragment();
+                    return new DoneTasksFragment();
             }
             return null;
         }

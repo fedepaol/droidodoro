@@ -44,4 +44,16 @@ public class PreferencesUtils {
     public void setDoneList(String done) {
         setString(DONE_ID, done);
     }
+
+    public String getTodoList() {
+        return mPreferences.getString(TODO_ID, "");
+    }
+
+    public String getDoingList() {
+        return mPreferences.getString(DOING_ID, "");
+    }
+
+    public String getDoneList() {
+        return mPreferences.getString(DONE_ID, "");
+    }
 }
