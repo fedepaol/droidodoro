@@ -8,8 +8,10 @@ import android.preference.PreferenceManager;
  * Created by fedepaol on 07/05/16.
  */
 public class PreferencesUtils {
-    private static final String PREFS_NAME = "com.whiterabbit.preferences";
     private static final String TOKEN_ID = "com.whiterabbit.token";
+    private static final String TODO_ID = "com.whiterabbit.todo";
+    private static final String DOING_ID = "com.whiterabbit.doing";
+    private static final String DONE_ID = "com.whiterabbit.done";
 
     private SharedPreferences mPreferences;
 
@@ -30,5 +32,16 @@ public class PreferencesUtils {
     public String getAuthToken() {
         return mPreferences.getString(TOKEN_ID, "");
     }
-    
+
+    public void setTodoList(String todo) {
+        setString(TODO_ID, todo);
+    }
+
+    public void setDoingList(String doing) {
+        setString(DOING_ID, doing);
+    }
+
+    public void setDoneList(String done) {
+        setString(DONE_ID, done);
+    }
 }

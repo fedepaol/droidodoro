@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 
 
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.trelloclient.TrelloClient;
 
 import javax.inject.Singleton;
@@ -48,4 +49,11 @@ public class ApplicationModule {
     TrelloClient provideTrelloClient(PreferencesUtils u) {
         return new TrelloClient(u);
     }
+
+    @Provides
+    @Singleton
+    TaskProviderClientExt provideStorageClient() {
+        return new TaskProviderClientExt(mApp.getApplicationContext());
+    }
+
 }

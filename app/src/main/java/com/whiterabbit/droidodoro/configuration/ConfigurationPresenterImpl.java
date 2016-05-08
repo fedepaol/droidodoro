@@ -4,8 +4,10 @@ import android.content.Context;
 
 import com.whiterabbit.droidodoro.R;
 import com.whiterabbit.droidodoro.model.Board;
+import com.whiterabbit.droidodoro.model.Card;
 import com.whiterabbit.droidodoro.model.TrelloList;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.trelloclient.TrelloClient;
 
 import java.util.ArrayList;
@@ -42,14 +44,17 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
     private TrelloClient mTrello;
     private ArrayList<BoardList> mBoards;
     private Subscription mBoardsSubscription;
+    private TaskProviderClientExt mProviderClient;
 
     public ConfigurationPresenterImpl(ConfigurationView v,
                                       TrelloClient trello,
-                                      PreferencesUtils prefUtils) {
+                                      PreferencesUtils prefUtils,
+                                      TaskProviderClientExt providerClient) {
         mView = v;
         mPreferences = prefUtils;
         mTrello = trello;
         mBoards = new ArrayList<>();
+        mProviderClient = providerClient;
     }
 
     private void initNoToken() {
@@ -143,4 +148,57 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
         mView.askForToken();
     }
 
+    @Override
+    public void onImportPressed() {
+        int todoIndx = mView.getTodoPosition();
+        int doingIndx = mView.getDoingPosition();
+        int doneIndx = mView.getDonePosition();
+
+        if (todoIndx == doingIndx ||
+            todoIndx == doneIndx ||
+            doingIndx == doneIndx) {
+            mView.notifyError(R.string.config_different_lists);
+        }
+        int boardIndx = mView.getBoardPosition();
+        BoardList board = mBoards.get(boardIndx);
+        String todoId = board.getLists().get(todoIndx).getId();
+        String doingId = board.getLists().get(doingIndx).getId();
+        String doneId = board.getLists().get(doneIndx).getId();
+
+        /* Chain:
+            - deletes from the storage
+            - fetches the cards from each list
+            - stores the cards
+            - stores the ids of the three lists
+            Reilies on the fact that map is performed in the subscription thread
+         */
+        Observable<Integer> o = Observable.fromCallable(mProviderClient::removeAllTask);
+        o.flatMap(i -> mTrello.getCards(todoId))
+                .map(t -> this.storeCards(t, todoId))
+                .flatMap(b -> mTrello.getCards(doingId))
+                .map(d ->  this.storeCards(d, doingId))
+                .flatMap(b -> mTrello.getCards(doneId))
+                .map(done ->  this.storeCards(done, doneId))
+                .observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(b -> {
+                    mPreferences.setTodoList(todoId);
+                    mPreferences.setDoingList(doingId);
+                    mPreferences.setDoneList(doneId);
+                    this.onSetupComplete();
+                }, e -> {
+                    this.onTrelloError(e.getMessage());
+                    mView.showProgress(0, false);
+                    },
+                    () -> mView.showProgress(0, false));
+    }
+
+    private boolean storeCards(List<Card> cards, String listId) {
+        mProviderClient.addCards(cards, listId) ;
+        return true;
+    }
+
+    private void onSetupComplete() {
+
+    }
 }

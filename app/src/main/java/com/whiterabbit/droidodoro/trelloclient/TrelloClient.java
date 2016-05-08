@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.whiterabbit.droidodoro.constants.Keys;
 import com.whiterabbit.droidodoro.model.Board;
+import com.whiterabbit.droidodoro.model.Card;
 import com.whiterabbit.droidodoro.model.TrelloList;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 
@@ -86,5 +87,9 @@ public class TrelloClient {
 
     public Observable<List<TrelloList>> getLists(String boardId) {
         return mClient.getLists(boardId);
+    }
+
+    public Observable<List<Card>> getCards(String listId) {
+        return mClient.getCards(listId);
     }
 }

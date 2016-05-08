@@ -3,5 +3,6 @@
     <!-- CONFIGURATION -->
     <string name="config_login">Login</string>
     <string name="config_fetching_boards">Fetching boards..</string>
-
+    <string name="config_import">Import Boards</string>
+    <string name="config_different_lists">The three chosen lists must be different from each other</string>
 </resources>

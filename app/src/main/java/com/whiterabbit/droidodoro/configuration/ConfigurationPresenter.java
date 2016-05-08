@@ -10,4 +10,5 @@ public interface ConfigurationPresenter {
     void onPause();
     void onResume();
     void onBoardUpdated();
+    void onImportPressed();
 }

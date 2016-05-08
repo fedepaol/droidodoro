@@ -19,6 +19,7 @@ package com.whiterabbit.droidodoro.trelloclient;
 
 
 import com.whiterabbit.droidodoro.model.Board;
+import com.whiterabbit.droidodoro.model.Card;
 import com.whiterabbit.droidodoro.model.TrelloList;
 
 import java.util.List;
@@ -34,4 +35,6 @@ public interface TrelloService {
     @GET("1/boards/{boardid}/lists?fields=name,id")
     Observable<List<TrelloList>> getLists(@Path("boardid") String boardid);
 
+    @GET("1/lists/{listid}/cards?card_fields=name")
+    Observable<List<Card>> getCards(@Path("listid") String listid);
 }

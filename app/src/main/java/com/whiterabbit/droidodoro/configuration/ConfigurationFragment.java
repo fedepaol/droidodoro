@@ -1,8 +1,10 @@
 package com.whiterabbit.droidodoro.configuration;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -167,5 +169,14 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     }
 
+    @OnClick(R.id.configuration_import)
+    public void onImportPressed(View v) {
+        mPresenter.onImportPressed();
+    }
 
+    @Override
+    public void notifyError(int stringId) {
+        Snackbar.make(getView().findViewById(android.R.id.content),
+                      getString(stringId), Snackbar.LENGTH_SHORT).show();
+    }
 }
