@@ -3,6 +3,7 @@ package com.whiterabbit.droidodoro.storage;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import com.whiterabbit.droidodoro.model.Card;
 
@@ -46,5 +47,22 @@ public class TaskProviderClientExt {
         String where = TasksProvider.TASK_IDENTIFIER_COLUMN + " = ?";
         String[] whereArgs = {taskId};
         return cr.update(TasksProvider.TASK_URI, contentValues, where, whereArgs);
+    }
+
+    public Cursor getTask(String taskId) {
+        ContentResolver cr = mContext.getContentResolver();
+        String[] resultColumns = new String[] {
+                TasksProvider.ROW_ID,
+                TasksProvider.TASK_IDENTIFIER_COLUMN,
+                TasksProvider.TASK_DESCRIPTION_COLUMN,
+                TasksProvider.TASK_POMODOROS_COLUMN,
+                TasksProvider.TASK_TIMESPENT_COLUMN
+        };
+
+        String where = TasksProvider.TASK_IDENTIFIER_COLUMN + " = ?";
+        String[] whereArgs = {taskId};
+
+        Cursor resultCursor = cr.query(TasksProvider.TASK_URI, resultColumns, where, whereArgs, null);
+        return resultCursor;
     }
 }

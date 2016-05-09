@@ -12,9 +12,15 @@
     <string name="tasks_doing">Doing</string>
     <string name="tasks_done">Done</string>
 
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="timer_start">Start</string>
+    <string name="timer_pause">Pause</string>
+    <string name="timer_stop">Stop</string>
+    <string name="timer_done">Done</string>
+    <string name="timer_short_break">Short Break</string>
+    <string name="timer_long_break">Long Break</string>
+    <string name="timer_end_break">End Break</string>
 
 
 </resources>

@@ -31,7 +31,7 @@ public class TodoTasksFragment extends TaskFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(i -> {},
                            e -> this.onUpdateError(e.getMessage()),
-                            () -> {this.startTimer(taskId);});
+                            () -> this.startTimer(taskId));
     }
 
     private void startTimer(String taskId) {

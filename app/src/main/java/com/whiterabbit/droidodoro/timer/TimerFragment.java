@@ -53,4 +53,34 @@ public class TimerFragment extends Fragment implements TimerView {
         return inflater.inflate(R.layout.fragment_timer, container, false);
     }
 
+
+    @Override
+    public String getTaskId() {
+        return mTaskId;
+    }
+
+    @Override
+    public void setTaskValues(String title, int pomodoros, long totalTime) {
+
+    }
+
+    @Override
+    public void toggleToStartControls(boolean show) {
+
+    }
+
+    @Override
+    public void toggleTimerGoingControls(boolean show) {
+
+    }
+
+    @Override
+    public void toggleTimerFinishedControls(boolean show) {
+
+    }
+
+    @Override
+    public void toggleBreakControls(boolean show) {
+
+    }
 }
