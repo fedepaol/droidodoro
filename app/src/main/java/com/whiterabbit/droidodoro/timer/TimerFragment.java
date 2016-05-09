@@ -63,6 +63,7 @@ public class TimerFragment extends Fragment implements TimerView, TimerActivity.
                 .applicationComponent(app.getComponent())
                 .timerModule(new TimerModule(this))
                 .build().inject(this);
+        setRetainInstance(true);
     }
 
     @Override

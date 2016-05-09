@@ -83,7 +83,11 @@ public class TimerPresenterImpl implements TimerPresenter {
 
     @Override
     public void onResume() {
-        setState(mPreferences.getTimerState());
+        if (mPreferences.getTimerTaskId().equals("")) {
+            setState(TimerStateEnum.STOPPED);
+        } else {
+            setState(mPreferences.getTimerState());
+        }
     }
 
     private TimerState getTimerStateFromEnum(TimerStateEnum e) {

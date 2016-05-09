@@ -65,7 +65,7 @@ public class TimerStateOnGoing extends TimerState {
     public void onStopPressed() {
         TaskProviderClientExt providerClient = mPresenter.getProviderClient();
         Observable.fromCallable(() -> providerClient.updateTime(mView.getTaskId(),
-                                        FIVE_MINUTES - mPresenter.getTimeToGo()))
+                                        FIVE_MINUTES - mPresenter.getTimeToGo() + mPresenter.getTimeSpent()))
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(i -> {},

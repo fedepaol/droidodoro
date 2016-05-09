@@ -24,6 +24,8 @@ public class TimerStateFinished extends TimerState {
         mView.toggleBreakControls(false);
         mView.toggleTimerGoingControls(false);
         mView.setCurrentTime(0);
+        mPresenter.resetTimer();
+        mPresenter.saveTaskId("");
 
         Observable.fromCallable(() -> providerClient.updateTimeAndPomodoros(mView.getTaskId(),
                 FIVE_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1
