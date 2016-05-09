@@ -49,6 +49,29 @@ public class TaskProviderClientExt {
         return cr.update(TasksProvider.TASK_URI, contentValues, where, whereArgs);
     }
 
+    public int updateTime(String taskId, long time) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TasksProvider.TASK_TIMESPENT_COLUMN, time);
+        contentValues.put(TasksProvider.TASK_TOSYNCH_COLUMN, 1);
+
+        ContentResolver cr = mContext.getContentResolver();
+        String where = TasksProvider.TASK_IDENTIFIER_COLUMN + " = ?";
+        String[] whereArgs = {taskId};
+        return cr.update(TasksProvider.TASK_URI, contentValues, where, whereArgs);
+    }
+
+    public int updateTimeAndPomodoros(String taskId, long time, long pomodoros) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TasksProvider.TASK_TIMESPENT_COLUMN, time);
+        contentValues.put(TasksProvider.TASK_POMODOROS_COLUMN, pomodoros);
+        contentValues.put(TasksProvider.TASK_TOSYNCH_COLUMN, 1);
+
+        ContentResolver cr = mContext.getContentResolver();
+        String where = TasksProvider.TASK_IDENTIFIER_COLUMN + " = ?";
+        String[] whereArgs = {taskId};
+        return cr.update(TasksProvider.TASK_URI, contentValues, where, whereArgs);
+    }
+
     public Cursor getTask(String taskId) {
         ContentResolver cr = mContext.getContentResolver();
         String[] resultColumns = new String[] {
@@ -65,4 +88,5 @@ public class TaskProviderClientExt {
         Cursor resultCursor = cr.query(TasksProvider.TASK_URI, resultColumns, where, whereArgs, null);
         return resultCursor;
     }
+
 }

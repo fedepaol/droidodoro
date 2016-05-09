@@ -7,8 +7,15 @@ import android.os.Bundle;
 import com.whiterabbit.droidodoro.R;
 import com.whiterabbit.droidodoro.configuration.ConfigurationFragment;
 
+import butterknife.OnClick;
+
 public class TimerActivity extends AppCompatActivity {
+    public interface OnBackPressedListener {
+        public void doBack();
+    }
+
     public static final String TASK_PARAM = "com.whiterabbit.task";
+    private OnBackPressedListener mOnBackListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,5 +28,17 @@ public class TimerActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.timer_fragment, f)
                     .commit();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mOnBackListener != null) {
+            mOnBackListener.doBack();
+        }
+        super.onBackPressed();
+    }
+
+    public void setOnBackListener(OnBackPressedListener onBackListener) {
+        this.mOnBackListener = onBackListener;
     }
 }

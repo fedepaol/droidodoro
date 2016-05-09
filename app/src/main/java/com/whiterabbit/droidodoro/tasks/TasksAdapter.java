@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whiterabbit.droidodoro.R;
+import com.whiterabbit.droidodoro.Utils;
 import com.whiterabbit.droidodoro.storage.TasksProvider;
 
 import butterknife.BindView;
@@ -71,7 +72,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         int pomodorosIndx = mTasks.getColumnIndex(TasksProvider.TASK_POMODOROS_COLUMN);
         long pomodoros = mTasks.getLong(pomodorosIndx);
         holder.mName.setText(name);
-        holder.mTimeSpent.setText(String.valueOf(seconds));
+        holder.mTimeSpent.setText(Utils.getTimeFromSeconds(seconds));
         holder.mPomodoros.setText(String.valueOf(pomodoros));
         int idIndext = mTasks.getColumnIndex(TasksProvider.TASK_IDENTIFIER_COLUMN);
         holder.mTaskId = mTasks.getString(idIndext);

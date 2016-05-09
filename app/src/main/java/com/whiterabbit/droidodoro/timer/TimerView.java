@@ -11,4 +11,7 @@ public interface TimerView {
     void toggleTimerGoingControls(boolean show);
     void toggleTimerFinishedControls(boolean show);
     void toggleBreakControls(boolean show);
+    void setPauseButtonText(int resid);
+    void setCurrentTime(long secondsToGo);
+    void closeView();
 }

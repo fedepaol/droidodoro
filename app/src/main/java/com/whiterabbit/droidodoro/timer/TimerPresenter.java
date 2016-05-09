@@ -6,4 +6,12 @@ package com.whiterabbit.droidodoro.timer;
 public interface TimerPresenter {
     void onPause();
     void onResume();
+    void onStartPressed();
+    void onPauseRestartPressed();
+    void onStopPressed();
+    void onBackPressed();
+    void onDonePressed();
+    void onShortBreakPressed();
+    void onLongBreakPressed();
+    void onStopBreakPressed();
 }
