@@ -17,6 +17,7 @@ import com.whiterabbit.droidodoro.DroidodoroApplication;
 import com.whiterabbit.droidodoro.R;
 import com.whiterabbit.droidodoro.configuration.ConfigurationActivity;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.timer.TimerActivity;
 
 import javax.inject.Inject;
 
@@ -41,13 +42,22 @@ public class TasksActivity extends AppCompatActivity {
         mPager.setAdapter(pagerAdapter);
         mTabs.setupWithViewPager(mPager);
 
-        if (mPreferences.didNotAuthenticate()) {
+        if (mPreferences.needsToConfigure()) {
             goToConfiguration();
+        } else if (mPreferences.isTimerOngoing()) {
+            goToTimer();
         }
+
+
     }
 
     private void goToConfiguration() {
         Intent i = new Intent(this, ConfigurationActivity.class);
+        startActivity(i);
+    }
+
+    private void goToTimer() {
+        Intent i = new Intent(this, TimerActivity.class);
         startActivity(i);
     }
 

@@ -30,7 +30,6 @@ public class TimerPresenterImpl implements TimerPresenter {
     private String taskName;
 
 
-
     private long timeSpent;
     private int pomodoros;
     private TimerState mState;

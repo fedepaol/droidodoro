@@ -23,6 +23,7 @@ public class TimerStateFinished extends TimerState {
         mView.toggleTimerFinishedControls(true);
         mView.toggleBreakControls(false);
         mView.toggleTimerGoingControls(false);
+        mView.setCurrentTime(0);
 
         Observable.fromCallable(() -> providerClient.updateTimeAndPomodoros(mView.getTaskId(),
                 FIVE_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1
@@ -63,8 +64,6 @@ public class TimerStateFinished extends TimerState {
             mPresenter.getTodoList()))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(i -> {},
-                    e -> {},
-                    () -> mView.closeView());
+            .subscribe();
     }
 }

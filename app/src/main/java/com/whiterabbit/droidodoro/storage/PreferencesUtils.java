@@ -40,8 +40,12 @@ public class PreferencesUtils {
         return mPreferences.getString(TOKEN_ID, "");
     }
 
-    public boolean didNotAuthenticate() {
-        return getAuthToken().equals("");
+    public boolean needsToConfigure() {
+        return getAuthToken().equals("") || getTodoList().equals("");
+    }
+
+    public boolean isTimerOngoing() {
+        return !getTimerTaskId().equals("");
     }
 
     public void setTodoList(String todo) {

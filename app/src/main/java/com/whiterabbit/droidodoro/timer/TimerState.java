@@ -8,7 +8,7 @@ import android.content.Context;
    the various events depending on the state the timer is currently on
  */
 public class TimerState implements TimerPresenter {
-    static final long FIVE_MINUTES = 5 * 60;
+    static final long FIVE_MINUTES = 15; // TODO Change to 5 minutes
 
     TimerView mView;
     TimerPresenterImpl mPresenter;

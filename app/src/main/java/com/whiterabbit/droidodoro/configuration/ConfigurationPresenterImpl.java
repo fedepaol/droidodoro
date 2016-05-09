@@ -196,6 +196,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
                     mPreferences.setTodoList(todoId);
                     mPreferences.setDoingList(doingId);
                     mPreferences.setDoneList(doneId);
+                    mPreferences.saveTaskId("");
                     this.onSetupComplete();
                 }, e -> {
                     this.onTrelloError(e.getMessage());
