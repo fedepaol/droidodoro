@@ -40,7 +40,7 @@ public class TimerStateOnGoing extends TimerState {
         } else if (started == 0){ // case 2
             mPresenter.startCountdown(timeToGo);
         } else {    // both are filled
-            long now = new Date().getTime() * 1000;
+            long now = new Date().getTime() / 1000;
             long spent = now - started;
             if (spent >= timeToGo) {
                 mPresenter.setState(TimerPresenterImpl.TimerStateEnum.FINISHED);

@@ -25,7 +25,6 @@ public class TimerStateFinished extends TimerState {
         mView.toggleTimerGoingControls(false);
         mView.setCurrentTime(0);
         mPresenter.resetTimer();
-        mPresenter.saveTaskId("");
 
         Observable.fromCallable(() -> providerClient.updateTimeAndPomodoros(mView.getTaskId(),
                 FIVE_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1
@@ -46,6 +45,7 @@ public class TimerStateFinished extends TimerState {
                 .subscribe(i -> {},
                         e -> {},
                         () -> mView.closeView());
+        mPresenter.saveTaskId("");
     }
 
     @Override
@@ -62,6 +62,7 @@ public class TimerStateFinished extends TimerState {
 
     @Override
     public void onBackPressed() {
+        mPresenter.saveTaskId("");
         Observable.fromCallable(() -> providerClient.moveTaskToOtherList(mView.getTaskId(),
             mPresenter.getTodoList()))
             .subscribeOn(Schedulers.io())

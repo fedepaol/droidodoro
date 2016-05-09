@@ -3,6 +3,7 @@ package com.whiterabbit.droidodoro.timer;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +64,6 @@ public class TimerFragment extends Fragment implements TimerView, TimerActivity.
                 .applicationComponent(app.getComponent())
                 .timerModule(new TimerModule(this))
                 .build().inject(this);
-        setRetainInstance(true);
     }
 
     @Override
@@ -73,6 +73,11 @@ public class TimerFragment extends Fragment implements TimerView, TimerActivity.
         View res = inflater.inflate(R.layout.fragment_timer, container, false);
         ButterKnife.bind(this, res);
         return res;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

@@ -23,7 +23,8 @@ public class TimerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timer);
 
         String taskName = getIntent().getStringExtra(TASK_PARAM);
-        if (getFragmentManager().findFragmentById(R.id.timer_fragment) == null) {
+
+        if (savedInstanceState == null && getFragmentManager().findFragmentById(R.id.timer_fragment) == null) {
             Fragment f = TimerFragment.newInstance(taskName);
             getSupportFragmentManager().beginTransaction().add(R.id.timer_fragment, f)
                     .commit();

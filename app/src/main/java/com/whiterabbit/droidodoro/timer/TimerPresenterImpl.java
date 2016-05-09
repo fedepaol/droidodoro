@@ -83,6 +83,7 @@ public class TimerPresenterImpl implements TimerPresenter {
 
     @Override
     public void onResume() {
+        reloadValues();
         if (mPreferences.getTimerTaskId().equals("")) {
             setState(TimerStateEnum.STOPPED);
         } else {
@@ -161,7 +162,7 @@ public class TimerPresenterImpl implements TimerPresenter {
     }
 
     public void startCountdown(long howLong) {
-        mPreferences.setStartedTime(new Date().getTime() * 1000);
+        mPreferences.setStartedTime(new Date().getTime() / 1000);
         mCountDownTimer = new CountDownTimer(howLong * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 mView.setCurrentTime(millisUntilFinished / 1000);
