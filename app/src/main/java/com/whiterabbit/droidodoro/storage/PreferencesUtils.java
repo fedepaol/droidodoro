@@ -33,6 +33,10 @@ public class PreferencesUtils {
         return mPreferences.getString(TOKEN_ID, "");
     }
 
+    public boolean didNotAuthenticate() {
+        return getAuthToken().equals("");
+    }
+
     public void setTodoList(String todo) {
         setString(TODO_ID, todo);
     }
