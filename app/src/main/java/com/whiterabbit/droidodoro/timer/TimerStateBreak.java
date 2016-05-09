@@ -20,11 +20,15 @@ public class TimerStateBreak extends TimerState {
 
     @Override
     public void onTimerFinished() {
+        mPresenter.resetTimer();
+        mPresenter.stopCountDown();
         mPresenter.setState(TimerPresenterImpl.TimerStateEnum.STOPPED);
     }
 
     @Override
     public void onStopBreakPressed() {
+        mPresenter.resetTimer();
+        mPresenter.stopCountDown();
         mPresenter.setState(TimerPresenterImpl.TimerStateEnum.STOPPED);
     }
 }

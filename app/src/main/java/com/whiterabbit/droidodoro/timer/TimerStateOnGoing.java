@@ -13,9 +13,11 @@ import rx.schedulers.Schedulers;
 
 
 public class TimerStateOnGoing extends TimerState {
+    TaskProviderClientExt providerClient;
 
     public TimerStateOnGoing(TimerView view, TimerPresenterImpl presenter) {
         super(view, presenter);
+        providerClient = presenter.getProviderClient();
     }
 
     @Override
@@ -52,7 +54,17 @@ public class TimerStateOnGoing extends TimerState {
 
     @Override
     public void onTimerFinished() {
-        mPresenter.setState(TimerPresenterImpl.TimerStateEnum.FINISHED);
+        Observable.fromCallable(() -> providerClient.updateTimeAndPomodoros(mView.getTaskId(),
+                FIVE_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1
+        ))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(i -> {},
+                        e -> {},
+                        () ->{
+                            mPresenter.setState(TimerPresenterImpl.TimerStateEnum.FINISHED);
+                            mPresenter.reloadValues();
+                        });
     }
 
     @Override

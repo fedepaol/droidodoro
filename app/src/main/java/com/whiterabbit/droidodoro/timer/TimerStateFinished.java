@@ -26,14 +26,7 @@ public class TimerStateFinished extends TimerState {
         mView.setCurrentTime(0);
         mPresenter.resetTimer();
 
-        Observable.fromCallable(() -> providerClient.updateTimeAndPomodoros(mView.getTaskId(),
-                FIVE_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1
-                ))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(i -> {},
-                        e -> {},
-                        () -> mPresenter.reloadValues());
+
     }
 
     @Override
