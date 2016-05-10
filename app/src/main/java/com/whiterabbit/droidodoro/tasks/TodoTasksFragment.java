@@ -27,12 +27,12 @@ public class TodoTasksFragment extends TaskFragment {
     @Override
     public void onTaskSelected(String taskId) {
         startTimer(taskId);
-        /* mSubscription = Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(taskId, mPreferences.getDoingList()))
+        mSubscription = Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(taskId, mPreferences.getDoingList()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(i -> {},
                            e -> this.onUpdateError(e.getMessage()),
-                            () -> this.startTimer(taskId));*/
+                            () -> this.startTimer(taskId));
     }
 
     private void startTimer(String taskId) {
@@ -45,4 +45,9 @@ public class TodoTasksFragment extends TaskFragment {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mSubscription.unsubscribe();
+    }
 }

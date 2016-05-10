@@ -18,8 +18,6 @@ import java.io.IOException;
    sets their flag to 0
  */
 public class TrelloSynchService extends GcmTaskService {
-    public static final String SYNCH_ONEOFF_TAG = "OneOffTag";
-
     private String buildComment(long seconds, long pomodoros) {
         return String.format(getString(R.string.trello_comment), pomodoros,
                                                                  Utils.getTimeFromSeconds(seconds));
@@ -31,6 +29,11 @@ public class TrelloSynchService extends GcmTaskService {
         TrelloClient trello = new TrelloClient(preferences);
 
         Cursor tasksToSynch = TaskProviderClientExt.getTasksToSynch(this);
+        if (tasksToSynch.getCount() == 0) {
+            tasksToSynch.close();
+            return GcmNetworkManager.RESULT_SUCCESS;
+        }
+        
         tasksToSynch.moveToFirst();
         do {
             int idIndex = tasksToSynch.getColumnIndex(TasksProvider.TASK_IDENTIFIER_COLUMN);

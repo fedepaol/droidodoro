@@ -28,6 +28,7 @@ public class TaskProviderClientExt {
                 .setTag(SYNCH_TAG)
                 .setExecutionWindow(0L, 3600L)
                 .setRequiredNetwork(Task.NETWORK_STATE_ANY)
+                .setUpdateCurrent(true)
                 .build();
         GcmNetworkManager.getInstance(mContext).schedule(task);
     }
