@@ -47,8 +47,6 @@ public class TasksActivity extends AppCompatActivity {
         } else if (mPreferences.isTimerOngoing()) {
             goToTimer();
         }
-
-
     }
 
     private void goToConfiguration() {
@@ -58,6 +56,7 @@ public class TasksActivity extends AppCompatActivity {
 
     private void goToTimer() {
         Intent i = new Intent(this, TimerActivity.class);
+        i.putExtra(TimerActivity.TASK_PARAM, mPreferences.getTimerTaskId());
         startActivity(i);
     }
 
