@@ -205,7 +205,6 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     @Override
     public void goToTasks() {
-        Intent i = new Intent(mContext, TasksActivity.class);
-        startActivity(i);
+        getActivity().finish();
     }
 }
