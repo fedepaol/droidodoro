@@ -33,12 +33,11 @@ public class TrelloSynchService extends GcmTaskService {
             tasksToSynch.close();
             return GcmNetworkManager.RESULT_SUCCESS;
         }
-        
+
         tasksToSynch.moveToFirst();
         do {
             int idIndex = tasksToSynch.getColumnIndex(TasksProvider.TASK_IDENTIFIER_COLUMN);
             String taskId = tasksToSynch.getString(idIndex);
-
             int timeColumnIndx = tasksToSynch.getColumnIndex(TasksProvider.TASK_TIMESPENT_COLUMN);
             long seconds = tasksToSynch.getLong(timeColumnIndx);
             int pomodorosIndx = tasksToSynch.getColumnIndex(TasksProvider.TASK_POMODOROS_COLUMN);
