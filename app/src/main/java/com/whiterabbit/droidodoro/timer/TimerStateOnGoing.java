@@ -1,5 +1,7 @@
 package com.whiterabbit.droidodoro.timer;
 
+import android.media.MediaPlayer;
+
 import com.whiterabbit.droidodoro.R;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
@@ -36,6 +38,7 @@ public class TimerStateOnGoing extends TimerState {
         mView.toggleTimerGoingControls(true);
         mView.setPauseButtonText(R.string.timer_pause);
         mPreferences.saveTaskId(mView.getTaskId()); // as soon as I enter in this state, taskid is saved
+        mPresenter.removeAlarm();
 
         // there can be three scenarios here:
         // 1 - the user just pressed start
@@ -62,6 +65,9 @@ public class TimerStateOnGoing extends TimerState {
 
     @Override
     public void onTimerFinished() {
+        final MediaPlayer mp = MediaPlayer.create(mView.getContext(), R.raw.applause);
+        mp.start();
+
         Observable.fromCallable(() -> mProviderClient.updateTimeAndPomodoros(mView.getTaskId(),
                 FIVE_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1
         ))
@@ -103,4 +109,9 @@ public class TimerStateOnGoing extends TimerState {
         super.onBackPressed();
     }
 
+    @Override
+    public void onPause() {
+        mPresenter.setAlarm(mPreferences.getTimeToGo());
+        super.onPause();
+    }
 }

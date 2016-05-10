@@ -1,5 +1,7 @@
 package com.whiterabbit.droidodoro.timer;
 
+import android.content.Context;
+
 /**
  * Created by fedepaol on 08/05/16.
  */
@@ -14,4 +16,5 @@ public interface TimerView {
     void setPauseButtonText(int resid);
     void setCurrentTime(long secondsToGo);
     void closeView();
+    Context getContext();
 }

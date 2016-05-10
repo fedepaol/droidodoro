@@ -1,5 +1,7 @@
 package com.whiterabbit.droidodoro.timer;
 
+import android.content.Context;
+
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
@@ -22,7 +24,8 @@ public class TimerModule {
     @Provides
     public TimerPresenter provideTimerPresenter(TimerView v,
                                                          PreferencesUtils u,
-                                                         TaskProviderClientExt c){
-        return new TimerPresenterImpl(v, u, c);
+                                                         TaskProviderClientExt c,
+                                                         Context context){
+        return new TimerPresenterImpl(v, u, c, context);
     }
 }

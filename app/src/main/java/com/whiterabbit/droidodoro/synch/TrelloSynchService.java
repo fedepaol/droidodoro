@@ -61,7 +61,6 @@ public class TrelloSynchService extends GcmTaskService {
         } while (tasksToSynch.moveToNext());
         tasksToSynch.close();
         TaskProviderClientExt.setSynchDone(this);
-        Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
 
         return GcmNetworkManager.RESULT_SUCCESS;
     }

@@ -1,11 +1,18 @@
 package com.whiterabbit.droidodoro.timer;
 
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.CountDownTimer;
 
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.storage.TasksProvider;
+import com.whiterabbit.droidodoro.synch.AlarmReceiver;
 
 import java.util.Date;
 
@@ -15,6 +22,7 @@ import rx.schedulers.Schedulers;
 
 
 public class TimerPresenterImpl implements TimerPresenter {
+    private static final String ALARM_ID = "TrelloAlarm";
     public enum TimerStateEnum {
         STOPPED,
         RUNNING,
@@ -26,6 +34,7 @@ public class TimerPresenterImpl implements TimerPresenter {
     private TimerView mView;
     private PreferencesUtils mPreferences;
     private TaskProviderClientExt mProviderClient;
+    private Context mContext;
 
     private String taskName;
 
@@ -43,15 +52,18 @@ public class TimerPresenterImpl implements TimerPresenter {
 
     public TimerPresenterImpl(TimerView v,
                               PreferencesUtils u,
-                              TaskProviderClientExt c) {
+                              TaskProviderClientExt c,
+                              Context context) {
         mView = v;
         mPreferences = u;
         mProviderClient = c;
+        mContext = context;
         mStateToStart = new TimerStateToStart(mView, this, u, c);
         mStateOngoing = new TimerStateOnGoing(mView, this, u, c);
         mStatePaused = new TimerStatePaused(mView, this, u, c);
         mStateFinished = new TimerStateFinished(mView, this, u, c);
         mStateBreak = new TimerStateBreak(mView, this, u, c);
+
         reloadValues();
     }
 
@@ -79,6 +91,7 @@ public class TimerPresenterImpl implements TimerPresenter {
     @Override
     public void onPause() {
         stopCountDown();
+        mState.onPause();
     }
 
     @Override
@@ -189,4 +202,22 @@ public class TimerPresenterImpl implements TimerPresenter {
         return pomodoros;
     }
 
+    public void setAlarm(long toFinish) {
+        long wakeUpTime = new Date().getTime() + toFinish * 1000;
+        AlarmManager am = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(mContext, AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            am.setAlarmClock(new AlarmManager.AlarmClockInfo(wakeUpTime, sender), sender);
+        } else {
+            am.set(AlarmManager.RTC_WAKEUP, wakeUpTime, sender);
+        }
+    }
+
+    public void removeAlarm() {
+        Intent intent = new Intent(mContext, AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager am = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        am.cancel(sender);
+    }
 }

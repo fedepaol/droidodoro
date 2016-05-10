@@ -196,4 +196,9 @@ public class TimerFragment extends Fragment implements TimerView, TimerActivity.
     public void closeView() {
         getActivity().finish();
     }
+
+    @Override
+    public Context getContext() {
+        return getActivity().getApplicationContext();
+    }
 }
