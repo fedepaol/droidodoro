@@ -14,6 +14,7 @@ import rx.schedulers.Schedulers;
 
 
 public class TimerStateOnGoing extends TimerState {
+    boolean mBackWasPressed;
 
     public TimerStateOnGoing(TimerView view,
                              TimerPresenterImpl presenter,
@@ -39,6 +40,7 @@ public class TimerStateOnGoing extends TimerState {
         mView.setPauseButtonText(R.string.timer_pause);
         mPreferences.saveTaskId(mView.getTaskId()); // as soon as I enter in this state, taskid is saved
         mPresenter.removeAlarm();
+        mBackWasPressed = false;
 
         // there can be three scenarios here:
         // 1 - the user just pressed start
@@ -107,11 +109,13 @@ public class TimerStateOnGoing extends TimerState {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        mBackWasPressed = true;
     }
 
     @Override
     public void onPause() {
-        mPresenter.setAlarm(mPreferences.getTimeToGo());
+        if (!mBackWasPressed) // awful hack to check if the app is being closed
+            mPresenter.setAlarm(mPreferences.getTimeToGo());
         super.onPause();
     }
 }
