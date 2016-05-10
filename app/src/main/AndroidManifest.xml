@@ -25,7 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".timer.TimerActivity"></activity>
+        <activity android:name=".timer.TimerActivity"/>
+        <service android:name=".synch.TrelloSynchService"
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

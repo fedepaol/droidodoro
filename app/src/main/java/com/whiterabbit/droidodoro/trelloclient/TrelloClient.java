@@ -32,13 +32,13 @@ import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import java.io.IOException;
 import java.util.List;
 
-import javax.inject.Inject;
 
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -91,5 +91,17 @@ public class TrelloClient {
 
     public Observable<List<Card>> getCards(String listId) {
         return mClient.getCards(listId);
+    }
+
+    public boolean updateCard(String card, String newList) throws IOException {
+        Call<ResponseBody> res = mClient.updateCard(card, newList);
+        Response<ResponseBody> result = res.execute();
+        return result.isSuccessful();
+    }
+
+    public boolean setCommentToCard(String card, String comment) throws IOException {
+        Call<ResponseBody> res = mClient.addComment(card, comment);
+        Response<ResponseBody> result = res.execute();
+        return result.isSuccessful();
     }
 }

@@ -5,16 +5,31 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.OneoffTask;
+import com.google.android.gms.gcm.Task;
 import com.whiterabbit.droidodoro.model.Card;
+import com.whiterabbit.droidodoro.synch.TrelloSynchService;
 
 import java.util.List;
 
 
 public class TaskProviderClientExt {
     private Context mContext;
+    private final static String SYNCH_TAG = "synch";
 
     public TaskProviderClientExt(Context mContext) {
         this.mContext = mContext;
+    }
+
+    private void scheduleSynch() {
+        OneoffTask task = new OneoffTask.Builder()
+                .setService(TrelloSynchService.class)
+                .setTag(SYNCH_TAG)
+                .setExecutionWindow(0L, 3600L)
+                .setRequiredNetwork(Task.NETWORK_STATE_ANY)
+                .build();
+        GcmNetworkManager.getInstance(mContext).schedule(task);
     }
 
     public int addCards(List<Card> cards, String listId) {
@@ -46,7 +61,9 @@ public class TaskProviderClientExt {
         ContentResolver cr = mContext.getContentResolver();
         String where = TasksProvider.TASK_IDENTIFIER_COLUMN + " = ?";
         String[] whereArgs = {taskId};
-        return cr.update(TasksProvider.TASK_URI, contentValues, where, whereArgs);
+        int res = cr.update(TasksProvider.TASK_URI, contentValues, where, whereArgs);
+        scheduleSynch();
+        return res;
     }
 
     public int updateTime(String taskId, long time) {
@@ -64,7 +81,6 @@ public class TaskProviderClientExt {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TasksProvider.TASK_TIMESPENT_COLUMN, time);
         contentValues.put(TasksProvider.TASK_POMODOROS_COLUMN, pomodoros);
-        contentValues.put(TasksProvider.TASK_TOSYNCH_COLUMN, 1);
 
         ContentResolver cr = mContext.getContentResolver();
         String where = TasksProvider.TASK_IDENTIFIER_COLUMN + " = ?";
@@ -87,6 +103,33 @@ public class TaskProviderClientExt {
 
         Cursor resultCursor = cr.query(TasksProvider.TASK_URI, resultColumns, where, whereArgs, null);
         return resultCursor;
+    }
+
+    public static Cursor getTasksToSynch(Context c) {
+        ContentResolver cr = c.getContentResolver();
+        String[] resultColumns = new String[] {
+                TasksProvider.ROW_ID,
+                TasksProvider.TASK_IDENTIFIER_COLUMN,
+                TasksProvider.TASK_DESCRIPTION_COLUMN,
+                TasksProvider.TASK_POMODOROS_COLUMN,
+                TasksProvider.TASK_TIMESPENT_COLUMN,
+                TasksProvider.TASK_LIST_COLUMN
+        };
+
+        String where = TasksProvider.TASK_TOSYNCH_COLUMN + " = ?";
+        String[] whereArgs = {"1"};
+        Cursor resultCursor = cr.query(TasksProvider.TASK_URI, resultColumns, where, whereArgs, null);
+        return resultCursor;
+    }
+
+    public static int setSynchDone(Context c) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TasksProvider.TASK_TOSYNCH_COLUMN, 0);
+
+        ContentResolver cr = c.getContentResolver();
+        String where = null;
+        String[] whereArgs = {};
+        return cr.update(TasksProvider.TASK_URI, contentValues, where, whereArgs);
     }
 
 }

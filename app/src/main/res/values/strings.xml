@@ -25,4 +25,6 @@
 
     <string name="configuration">Configuration</string>
 
+    <string name="trello_comment">%1$d pomodoros, %2$s time spent</string>
+
 </resources>
