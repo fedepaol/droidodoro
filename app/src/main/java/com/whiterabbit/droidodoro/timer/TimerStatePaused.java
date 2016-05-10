@@ -8,6 +8,10 @@ import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
 import java.util.Date;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by fedepaol on 09/05/16.
  */
@@ -34,5 +38,20 @@ public class TimerStatePaused extends TimerState {
         mPresenter.setState(TimerPresenterImpl.TimerStateEnum.RUNNING);
     }
 
-
+    @Override
+    public void onStopPressed() {
+        Observable.fromCallable(() -> mProviderClient.updateTime(mView.getTaskId(),
+                FIVE_MINUTES - mPreferences.getTimeToGo() + mPresenter.getTimeSpent()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(i -> {},
+                        e -> {},
+                        () -> {
+                            mPresenter.stopCountDown();
+                            mPresenter.reloadValues();
+                            mPresenter.resetTimer();
+                            mPreferences.setTimeToGo(FIVE_MINUTES);
+                            mPresenter.setState(TimerPresenterImpl.TimerStateEnum.STOPPED);
+                        });
+    }
 }

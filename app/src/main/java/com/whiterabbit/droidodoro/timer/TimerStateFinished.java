@@ -55,13 +55,4 @@ public class TimerStateFinished extends TimerState {
         mPresenter.setState(TimerPresenterImpl.TimerStateEnum.BREAK);
     }
 
-    @Override
-    public void onBackPressed() {
-        mPreferences.saveTaskId("");
-        Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(mView.getTaskId(),
-                mPreferences.getTodoList()))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe();
-    }
 }

@@ -100,7 +100,7 @@ public class TimerStateOnGoing extends TimerState {
 
     @Override
     public void onBackPressed() {
-        onStopPressed();
+        super.onBackPressed();
     }
 
 }

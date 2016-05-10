@@ -1,6 +1,8 @@
 package com.whiterabbit.droidodoro.synch;
 
 import android.database.Cursor;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
@@ -25,6 +27,7 @@ public class TrelloSynchService extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
+        Log.d("SYNCH", "Started synch");
         PreferencesUtils preferences = new PreferencesUtils(this);
         TrelloClient trello = new TrelloClient(preferences);
 
@@ -58,6 +61,8 @@ public class TrelloSynchService extends GcmTaskService {
         } while (tasksToSynch.moveToNext());
         tasksToSynch.close();
         TaskProviderClientExt.setSynchDone(this);
+        Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
+
         return GcmNetworkManager.RESULT_SUCCESS;
     }
 }

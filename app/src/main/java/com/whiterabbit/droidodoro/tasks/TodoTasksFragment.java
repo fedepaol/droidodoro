@@ -26,7 +26,6 @@ public class TodoTasksFragment extends TaskFragment {
 
     @Override
     public void onTaskSelected(String taskId) {
-        startTimer(taskId);
         mSubscription = Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(taskId, mPreferences.getDoingList()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -48,6 +47,8 @@ public class TodoTasksFragment extends TaskFragment {
     @Override
     public void onStop() {
         super.onStop();
-        mSubscription.unsubscribe();
+        if (mSubscription != null) {
+            mSubscription.unsubscribe();
+        }
     }
 }

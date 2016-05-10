@@ -5,6 +5,10 @@ import android.content.Context;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 
 /* Since the timer handling state is pretty complex this represent the class that handles
    the various events depending on the state the timer is currently on
@@ -62,7 +66,14 @@ public abstract class TimerState implements TimerPresenter {
 
     @Override
     public void onBackPressed() {
-
+        mPreferences.saveTaskId("");
+        Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(mView.getTaskId(),
+                mPreferences.getTodoList()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+        mPresenter.resetTimer();
+        mPresenter.stopCountDown();
     }
 
     @Override
