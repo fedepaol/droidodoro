@@ -1,6 +1,7 @@
 package com.whiterabbit.droidodoro.timer;
 
 
+import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
 import rx.Observable;
@@ -11,10 +12,11 @@ import rx.schedulers.Schedulers;
  * Created by fedepaol on 09/05/16.
  */
 public class TimerStateFinished extends TimerState {
-    TaskProviderClientExt providerClient;
-    public TimerStateFinished(TimerView view, TimerPresenterImpl presenter) {
-        super(view, presenter);
-        providerClient = mPresenter.getProviderClient();
+    public TimerStateFinished(TimerView view,
+                              TimerPresenterImpl presenter,
+                              PreferencesUtils prefs,
+                              TaskProviderClientExt client) {
+        super(view, presenter, prefs, client);
     }
 
     @Override
@@ -31,33 +33,33 @@ public class TimerStateFinished extends TimerState {
 
     @Override
     public void onDonePressed() {
-        Observable.fromCallable(() -> providerClient.moveTaskToOtherList(mView.getTaskId(),
-                                                                         mPresenter.getDoneList()))
+        Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(mView.getTaskId(),
+                mPreferences.getDoneList()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(i -> {},
                         e -> {},
                         () -> mView.closeView());
-        mPresenter.saveTaskId("");
+        mPreferences.saveTaskId("");
     }
 
     @Override
     public void onShortBreakPressed() {
-        mPresenter.setTimeToGo(5 * 60);
+        mPreferences.setTimeToGo(5 * 60);
         mPresenter.setState(TimerPresenterImpl.TimerStateEnum.BREAK);
     }
 
     @Override
     public void onLongBreakPressed() {
-        mPresenter.setTimeToGo(15 * 60);
+        mPreferences.setTimeToGo(15 * 60);
         mPresenter.setState(TimerPresenterImpl.TimerStateEnum.BREAK);
     }
 
     @Override
     public void onBackPressed() {
-        mPresenter.saveTaskId("");
-        Observable.fromCallable(() -> providerClient.moveTaskToOtherList(mView.getTaskId(),
-            mPresenter.getTodoList()))
+        mPreferences.saveTaskId("");
+        Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(mView.getTaskId(),
+                mPreferences.getTodoList()))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe();

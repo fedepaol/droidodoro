@@ -1,8 +1,7 @@
 package com.whiterabbit.droidodoro.timer;
 
-import android.content.Context;
-
 import com.whiterabbit.droidodoro.R;
+import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
 import java.util.Date;
@@ -13,11 +12,20 @@ import rx.schedulers.Schedulers;
 
 
 public class TimerStateOnGoing extends TimerState {
-    TaskProviderClientExt providerClient;
 
-    public TimerStateOnGoing(TimerView view, TimerPresenterImpl presenter) {
-        super(view, presenter);
-        providerClient = presenter.getProviderClient();
+    public TimerStateOnGoing(TimerView view,
+                             TimerPresenterImpl presenter,
+                             PreferencesUtils prefs,
+                             TaskProviderClientExt client) {
+        super(view, presenter, prefs, client);
+    }
+
+    private boolean isFirstStart(long timeToGo, long started) {
+        return (timeToGo == 0 && started == 0);
+    }
+
+    private boolean isResume(long timeToGo, long started) {
+        return (timeToGo != 0 && started == 0);
     }
 
     @Override
@@ -27,19 +35,19 @@ public class TimerStateOnGoing extends TimerState {
         mView.toggleBreakControls(false);
         mView.toggleTimerGoingControls(true);
         mView.setPauseButtonText(R.string.timer_pause);
-        mPresenter.saveTaskId(mView.getTaskId()); // as soon as I enter in this state, taskid is saved
+        mPreferences.saveTaskId(mView.getTaskId()); // as soon as I enter in this state, taskid is saved
 
         // there can be three scenarios here:
         // 1 - the user just pressed start
         // 2 - the user is coming back from pause
         // 3 - the user got back to the app and the timer was supposed to run
 
-        long timeToGo = mPresenter.getTimeToGo();
-        long started = mPresenter.getStartedTime();
+        long timeToGo = mPreferences.getTimeToGo();
+        long started = mPreferences.getStartedTime();
 
-        if (timeToGo == 0 && started == 0) { // case 1
+        if (isFirstStart(timeToGo, started)) { // case 1
             mPresenter.startCountdown(FIVE_MINUTES);
-        } else if (started == 0){ // case 2
+        } else if (isResume(timeToGo, started)){ // case 2
             mPresenter.startCountdown(timeToGo);
         } else {    // both are filled
             long now = new Date().getTime() / 1000;
@@ -54,7 +62,7 @@ public class TimerStateOnGoing extends TimerState {
 
     @Override
     public void onTimerFinished() {
-        Observable.fromCallable(() -> providerClient.updateTimeAndPomodoros(mView.getTaskId(),
+        Observable.fromCallable(() -> mProviderClient.updateTimeAndPomodoros(mView.getTaskId(),
                 FIVE_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1
         ))
                 .subscribeOn(Schedulers.io())
@@ -75,9 +83,8 @@ public class TimerStateOnGoing extends TimerState {
 
     @Override
     public void onStopPressed() {
-        TaskProviderClientExt providerClient = mPresenter.getProviderClient();
-        Observable.fromCallable(() -> providerClient.updateTime(mView.getTaskId(),
-                                        FIVE_MINUTES - mPresenter.getTimeToGo() + mPresenter.getTimeSpent()))
+        Observable.fromCallable(() -> mProviderClient.updateTime(mView.getTaskId(),
+                                        FIVE_MINUTES - mPreferences.getTimeToGo() + mPresenter.getTimeSpent()))
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(i -> {},
@@ -86,7 +93,7 @@ public class TimerStateOnGoing extends TimerState {
                                                 mPresenter.stopCountDown();
                                                 mPresenter.reloadValues();
                                                 mPresenter.resetTimer();
-                                                mPresenter.setTimeToGo(FIVE_MINUTES);
+                                                mPreferences.setTimeToGo(FIVE_MINUTES);
                                                 mPresenter.setState(TimerPresenterImpl.TimerStateEnum.STOPPED);
                                             });
     }

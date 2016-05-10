@@ -1,11 +1,17 @@
 package com.whiterabbit.droidodoro.timer;
 
+import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
+
 /**
  * Created by fedepaol on 09/05/16.
  */
 public class TimerStateBreak extends TimerState {
-    public TimerStateBreak(TimerView view, TimerPresenterImpl presenter) {
-        super(view, presenter);
+    public TimerStateBreak(TimerView view,
+                           TimerPresenterImpl presenter,
+                           PreferencesUtils prefs,
+                           TaskProviderClientExt client) {
+        super(view, presenter, prefs, client);
     }
 
     @Override
@@ -15,7 +21,7 @@ public class TimerStateBreak extends TimerState {
         mView.toggleBreakControls(true);
         mView.toggleTimerGoingControls(false);
 
-        mPresenter.startCountdown(mPresenter.getTimeToGo());
+        mPresenter.startCountdown(mPreferences.getTimeToGo());
     }
 
     @Override

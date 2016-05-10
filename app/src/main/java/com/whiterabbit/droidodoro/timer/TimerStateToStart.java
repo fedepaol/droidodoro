@@ -2,14 +2,20 @@ package com.whiterabbit.droidodoro.timer;
 
 import android.content.Context;
 
+import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
+
 import java.util.Date;
 
 /**
  * Created by fedepaol on 09/05/16.
  */
 public class TimerStateToStart extends TimerState {
-    public TimerStateToStart(TimerView view, TimerPresenterImpl presenter) {
-        super(view, presenter);
+    public TimerStateToStart(TimerView view,
+                             TimerPresenterImpl presenter,
+                             PreferencesUtils prefs,
+                             TaskProviderClientExt client) {
+        super(view, presenter, prefs, client);
     }
 
     @Override
@@ -23,7 +29,7 @@ public class TimerStateToStart extends TimerState {
         mView.toggleTimerFinishedControls(false);
         mView.toggleBreakControls(false);
         mView.toggleTimerGoingControls(false);
-        mPresenter.saveTaskId("");
+        mPreferences.saveTaskId("");
         mView.setCurrentTime(FIVE_MINUTES);
     }
 }

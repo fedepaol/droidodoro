@@ -2,22 +2,29 @@ package com.whiterabbit.droidodoro.timer;
 
 import android.content.Context;
 
+import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
 
 /* Since the timer handling state is pretty complex this represent the class that handles
    the various events depending on the state the timer is currently on
  */
-public class TimerState implements TimerPresenter {
+public abstract class TimerState implements TimerPresenter {
     static final long FIVE_MINUTES = 15; // TODO Change to 5 minutes
 
     TimerView mView;
     TimerPresenterImpl mPresenter;
+    PreferencesUtils mPreferences;
+    TaskProviderClientExt mProviderClient;
 
     public TimerState(TimerView view,
-                      TimerPresenterImpl presenter) {
+                      TimerPresenterImpl presenter,
+                      PreferencesUtils preferences,
+                      TaskProviderClientExt client) {
         mView = view;
         mPresenter = presenter;
-
+        mPreferences = preferences;
+        mProviderClient = client;
     }
 
     void onEnterState() {

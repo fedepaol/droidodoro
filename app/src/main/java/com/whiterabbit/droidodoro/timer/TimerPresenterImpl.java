@@ -47,11 +47,11 @@ public class TimerPresenterImpl implements TimerPresenter {
         mView = v;
         mPreferences = u;
         mProviderClient = c;
-        mStateToStart = new TimerStateToStart(mView, this);
-        mStateOngoing = new TimerStateOnGoing(mView, this);
-        mStatePaused = new TimerStatePaused(mView, this);
-        mStateFinished = new TimerStateFinished(mView, this);
-        mStateBreak = new TimerStateBreak(mView, this);
+        mStateToStart = new TimerStateToStart(mView, this, u, c);
+        mStateOngoing = new TimerStateOnGoing(mView, this, u, c);
+        mStatePaused = new TimerStatePaused(mView, this, u, c);
+        mStateFinished = new TimerStateFinished(mView, this, u, c);
+        mStateBreak = new TimerStateBreak(mView, this, u, c);
         reloadValues();
     }
 
@@ -92,7 +92,7 @@ public class TimerPresenterImpl implements TimerPresenter {
     }
 
     private TimerState getTimerStateFromEnum(TimerStateEnum e) {
-        switch(e) {
+        switch (e) {
             case STOPPED:
                 return mStateToStart;
             case RUNNING:
@@ -168,6 +168,7 @@ public class TimerPresenterImpl implements TimerPresenter {
                 mView.setCurrentTime(millisUntilFinished / 1000);
                 mPreferences.setTimeToGo(millisUntilFinished / 1000); // TODO This can be optimized
             }
+
             public void onFinish() {
                 mState.onTimerFinished();
             }
@@ -188,35 +189,4 @@ public class TimerPresenterImpl implements TimerPresenter {
         return pomodoros;
     }
 
-    public long getTimeToGo() {
-        return mPreferences.getTimeToGo();
-    }
-
-    public void setTimeToGo(long timeToGo) {
-        mPreferences.setTimeToGo(timeToGo);
-    }
-
-    public long getStartedTime() {
-        return mPreferences.getStartedTime();
-    }
-
-    public void resetDateStart() {
-        mPreferences.setStartedTime(0);
-    }
-
-    public void saveTaskId(String taskId) {
-        mPreferences.saveTaskId(taskId);
-    }
-
-    public TaskProviderClientExt getProviderClient() {
-        return mProviderClient;
-    }
-
-    public String getDoneList() {
-        return mPreferences.getDoneList();
-    }
-
-    public String getTodoList() {
-        return mPreferences.getTodoList();
-    }
 }
