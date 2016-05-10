@@ -23,6 +23,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder b = new NotificationCompat.Builder(context);
         b.setContentTitle(context.getString(R.string.pomodoro_finished))
+                .setAutoCancel(true)
                 .setContentText(context.getString(R.string.pomodoro_task_finished))
                 .setSmallIcon(android.R.drawable.ic_notification_clear_all)
                 .setContentIntent(pIntent);
