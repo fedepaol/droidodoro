@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.whiterabbit.droidodoro.BuildConfig;
 import com.whiterabbit.droidodoro.constants.Keys;
 import com.whiterabbit.droidodoro.model.Board;
 import com.whiterabbit.droidodoro.model.Card;
@@ -60,14 +61,12 @@ public class TrelloClient {
         OkHttpClient okClient = new OkHttpClient.Builder()
                                 .addInterceptor(chain -> {
                                     Request original = chain.request();
-                                    Log.d("FEDE", original.url().toString());
                                     HttpUrl newUrl = original.url().newBuilder()
-                                            .addQueryParameter("key", Keys.TRELLO_KEY)
+                                            .addQueryParameter("key", BuildConfig.TRELLO_API_KEY)
                                             .addQueryParameter("token", mPreferences.getAuthToken()).build();
 
                                     Request enhancedRequest = original.newBuilder()
                                             .url(newUrl).build();
-                                    Log.d("FEDE", enhancedRequest.url().toString());
                                     return chain.proceed(enhancedRequest);
                                 }).build();
 
