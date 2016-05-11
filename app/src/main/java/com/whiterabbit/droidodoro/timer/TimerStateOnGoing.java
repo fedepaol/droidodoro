@@ -1,8 +1,10 @@
 package com.whiterabbit.droidodoro.timer;
 
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import com.whiterabbit.droidodoro.R;
+import com.whiterabbit.droidodoro.Utils;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
@@ -51,16 +53,18 @@ public class TimerStateOnGoing extends TimerState {
         long started = mPreferences.getStartedTime();
 
         if (isFirstStart(timeToGo, started)) { // case 1
+            mPreferences.setStartedTime(Utils.getNowMillis() / 1000); // First start
             mPresenter.startCountdown(FIVE_MINUTES);
         } else if (isResume(timeToGo, started)){ // case 2
             mPresenter.startCountdown(timeToGo);
         } else {    // both are filled
-            long now = new Date().getTime() / 1000;
+            long now = Utils.getNowMillis() / 1000;
             long spent = now - started;
-            if (spent >= timeToGo) {
+            if (spent >= FIVE_MINUTES) {
                 mPresenter.setState(TimerPresenterImpl.TimerStateEnum.FINISHED);
             } else {
-                mPresenter.startCountdown(timeToGo - spent);
+                Log.d("FEDE", "resuming " + timeToGo + " " + spent + " " + (timeToGo - spent));
+                mPresenter.startCountdown(FIVE_MINUTES - spent);
             }
         }
     }
@@ -69,10 +73,8 @@ public class TimerStateOnGoing extends TimerState {
     public void onTimerFinished() {
         final MediaPlayer mp = MediaPlayer.create(mView.getContext(), R.raw.applause);
         mp.start();
-
         Observable.fromCallable(() -> mProviderClient.updateTimeAndPomodoros(mView.getTaskId(),
-                FIVE_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1
-        ))
+                FIVE_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(i -> {},

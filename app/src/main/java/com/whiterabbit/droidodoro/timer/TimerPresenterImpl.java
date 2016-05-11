@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.util.Log;
 
+import com.whiterabbit.droidodoro.Utils;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.storage.TasksProvider;
@@ -175,11 +177,11 @@ public class TimerPresenterImpl implements TimerPresenter {
     }
 
     public void startCountdown(long howLong) {
-        mPreferences.setStartedTime(new Date().getTime() / 1000);
         mCountDownTimer = new CountDownTimer(howLong * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 mView.setCurrentTime(millisUntilFinished / 1000);
                 mPreferences.setTimeToGo(millisUntilFinished / 1000); // TODO This can be optimized
+                Log.d("FEDE", "To go " + millisUntilFinished / 1000);
             }
 
             public void onFinish() {
@@ -203,7 +205,7 @@ public class TimerPresenterImpl implements TimerPresenter {
     }
 
     public void setAlarm(long toFinish) {
-        long wakeUpTime = new Date().getTime() + toFinish * 1000;
+        long wakeUpTime = Utils.getNowMillis() + toFinish * 1000;
         AlarmManager am = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(mContext, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);

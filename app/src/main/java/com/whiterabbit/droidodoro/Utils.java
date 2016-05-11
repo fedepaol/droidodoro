@@ -1,5 +1,7 @@
 package com.whiterabbit.droidodoro;
 
+import java.util.Calendar;
+
 import static java.lang.String.format;
 
 public class Utils {
@@ -9,4 +11,10 @@ public class Utils {
         long sec = seconds % 60;
         return format("%02d:%02d:%02d", hours, minutes, sec);
     }
+
+    public static long getNowMillis() {
+        Calendar rightNow = Calendar.getInstance();
+        return rightNow.getTimeInMillis();
+    }
+
 }

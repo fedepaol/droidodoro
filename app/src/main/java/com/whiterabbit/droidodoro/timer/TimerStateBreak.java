@@ -1,5 +1,6 @@
 package com.whiterabbit.droidodoro.timer;
 
+import com.whiterabbit.droidodoro.Utils;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
@@ -20,7 +21,7 @@ public class TimerStateBreak extends TimerState {
         mView.toggleTimerFinishedControls(false);
         mView.toggleBreakControls(true);
         mView.toggleTimerGoingControls(false);
-
+        mPreferences.setStartedTime(Utils.getNowMillis() / 1000);
         mPresenter.startCountdown(mPreferences.getTimeToGo());
     }
 
