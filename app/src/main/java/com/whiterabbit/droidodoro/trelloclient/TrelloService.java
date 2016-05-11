@@ -18,9 +18,9 @@
 package com.whiterabbit.droidodoro.trelloclient;
 
 
-import com.whiterabbit.droidodoro.model.Board;
-import com.whiterabbit.droidodoro.model.Card;
-import com.whiterabbit.droidodoro.model.TrelloList;
+import com.whiterabbit.droidodoro.trelloclient.model.Board;
+import com.whiterabbit.droidodoro.trelloclient.model.Card;
+import com.whiterabbit.droidodoro.trelloclient.model.TrelloList;
 
 import java.util.List;
 

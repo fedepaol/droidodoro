@@ -22,10 +22,10 @@ package com.whiterabbit.droidodoro.trelloclient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.whiterabbit.droidodoro.BuildConfig;
-import com.whiterabbit.droidodoro.model.Board;
-import com.whiterabbit.droidodoro.model.Card;
-import com.whiterabbit.droidodoro.model.TrelloList;
-import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.KeyValueStorage;
+import com.whiterabbit.droidodoro.trelloclient.model.Board;
+import com.whiterabbit.droidodoro.trelloclient.model.Card;
+import com.whiterabbit.droidodoro.trelloclient.model.TrelloList;
 
 
 import java.io.IOException;
@@ -44,7 +44,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
 public class TrelloClient {
-    PreferencesUtils mPreferences;
+    KeyValueStorage mPreferences;
 
     private TrelloService mClient;
 
@@ -54,7 +54,7 @@ public class TrelloClient {
         return builder.create();
     }
 
-    public TrelloClient(PreferencesUtils preferences) {
+    public TrelloClient(KeyValueStorage preferences) {
         mPreferences = preferences;
         OkHttpClient okClient = new OkHttpClient.Builder()
                                 .addInterceptor(chain -> {

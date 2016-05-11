@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 
-import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.KeyValueStorage;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.trelloclient.TrelloClient;
 
@@ -40,13 +40,13 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    PreferencesUtils providePrefUtils() {
-        return new PreferencesUtils(mApp);
+    KeyValueStorage providePrefUtils() {
+        return new KeyValueStorage(mApp);
     }
 
     @Provides
     @Singleton
-    TrelloClient provideTrelloClient(PreferencesUtils u) {
+    TrelloClient provideTrelloClient(KeyValueStorage u) {
         return new TrelloClient(u);
     }
 

@@ -1,15 +1,13 @@
 package com.whiterabbit.droidodoro.synch;
 
 import android.database.Cursor;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
 import com.whiterabbit.droidodoro.R;
 import com.whiterabbit.droidodoro.Utils;
-import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.KeyValueStorage;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.storage.TasksProvider;
 import com.whiterabbit.droidodoro.trelloclient.TrelloClient;
@@ -27,7 +25,7 @@ public class TrelloSynchService extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
-        PreferencesUtils preferences = new PreferencesUtils(this);
+        KeyValueStorage preferences = new KeyValueStorage(this);
         TrelloClient trello = new TrelloClient(preferences);
 
         Cursor tasksToSynch = TaskProviderClientExt.getTasksToSynch(this);

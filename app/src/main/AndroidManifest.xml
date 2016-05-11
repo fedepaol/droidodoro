@@ -16,16 +16,16 @@
         <provider
             android:name=".storage.TasksProvider"
             android:authorities="com.whiterabbit.droidodoro" />
-        <activity android:name=".configuration.ConfigurationActivity"/>
+        <activity android:name=".screens.configuration.ConfigurationActivity"/>
         <activity
-            android:name=".tasks.TasksActivity"
+            android:name=".screens.tasks.TasksActivity"
             android:theme="@style/AppTheme.ActionBarWithTabsTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".timer.TimerActivity"/>
+        <activity android:name=".screens.timer.TimerActivity"/>
         <service android:name=".synch.TrelloSynchService"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE"
             android:exported="true">
@@ -34,7 +34,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".synch.AlarmReceiver"/>
+        <receiver android:name=".synch.PomodoroExpiredAlarmReceiver"/>
         <service android:name=".synch.UpdatePomodorosService"/>
     </application>
 

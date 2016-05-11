@@ -8,7 +8,7 @@ import android.database.Cursor;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.Task;
-import com.whiterabbit.droidodoro.model.Card;
+import com.whiterabbit.droidodoro.trelloclient.model.Card;
 import com.whiterabbit.droidodoro.synch.TrelloSynchService;
 
 import java.util.List;

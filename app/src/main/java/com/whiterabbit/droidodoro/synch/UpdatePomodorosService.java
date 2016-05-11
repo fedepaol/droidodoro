@@ -11,12 +11,11 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.whiterabbit.droidodoro.R;
-import com.whiterabbit.droidodoro.Utils;
-import com.whiterabbit.droidodoro.storage.PreferencesUtils;
+import com.whiterabbit.droidodoro.storage.KeyValueStorage;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.storage.TasksProvider;
-import com.whiterabbit.droidodoro.tasks.TasksActivity;
-import com.whiterabbit.droidodoro.timer.TimerState;
+import com.whiterabbit.droidodoro.screens.tasks.TasksActivity;
+import com.whiterabbit.droidodoro.screens.timer.TimerState;
 
 /**
  * Created by fedepaol on 11/05/16.
@@ -31,7 +30,7 @@ public class UpdatePomodorosService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         TaskProviderClientExt client = new TaskProviderClientExt(this);
-        PreferencesUtils prefs = new PreferencesUtils(this);
+        KeyValueStorage prefs = new KeyValueStorage(this);
         String taskId = prefs.getTimerTaskId();
         if (taskId.equals("")) {
             Log.e("Droidodoro", "End task broadcast on empty task");
