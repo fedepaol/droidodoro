@@ -18,12 +18,10 @@
 package com.whiterabbit.droidodoro.trelloclient;
 
 
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.whiterabbit.droidodoro.BuildConfig;
-import com.whiterabbit.droidodoro.constants.Keys;
 import com.whiterabbit.droidodoro.model.Board;
 import com.whiterabbit.droidodoro.model.Card;
 import com.whiterabbit.droidodoro.model.TrelloList;
