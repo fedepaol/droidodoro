@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.whiterabbit.droidodoro.DroidodoroApplication;
 import com.whiterabbit.droidodoro.R;
 import com.whiterabbit.droidodoro.storage.KeyValueStorage;
+import com.whiterabbit.droidodoro.storage.ListType;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.storage.TasksProvider;
 
@@ -69,8 +70,8 @@ public abstract class TaskFragment extends Fragment implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = null;
-        String where = "List = ?";
-        String[] whereArgs = {getListId()};
+        String where = "ListType = ?";
+        String[] whereArgs = {String.valueOf(getListType().ordinal())};
         String sortOrder = "TimeSpent desc";
 
         // Query URI
@@ -88,7 +89,7 @@ public abstract class TaskFragment extends Fragment implements
         mAdapter.setTasks(null);
     }
 
-    abstract String getListId();
+    abstract ListType getListType();
 
     abstract int getLoaderId();
 

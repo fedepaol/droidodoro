@@ -33,7 +33,7 @@ public class TaskProviderClientExt {
         GcmNetworkManager.getInstance(mContext).schedule(task);
     }
 
-    public int addCards(List<Card> cards, String listId) {
+    public int addCards(List<Card> cards, String listId, ListType type) {
         ContentValues[] values = new ContentValues[cards.size()];
         for (int i = 0; i < cards.size(); i++) {
             Card toPut = cards.get(i);
@@ -44,6 +44,8 @@ public class TaskProviderClientExt {
             values[i].put(TasksProvider.TASK_POMODOROS_COLUMN, 0);
             values[i].put(TasksProvider.TASK_TIMESPENT_COLUMN, 0);
             values[i].put(TasksProvider.TASK_TOSYNCH_COLUMN, 0);
+            values[i].put(TasksProvider.TASK_LISTTYPE_COLUMN, type.ordinal());
+
         }
         ContentResolver cr = mContext.getContentResolver();
         return cr.bulkInsert(TasksProvider.TASK_URI, values);
@@ -54,9 +56,10 @@ public class TaskProviderClientExt {
         return cr.delete(TasksProvider.TASK_URI, null, null);
     }
 
-    public int moveTaskToOtherList(String taskId, String doingListId) {
+    public int moveTaskToOtherList(String taskId, String doingListId, ListType type) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TasksProvider.TASK_LIST_COLUMN, doingListId);
+        contentValues.put(TasksProvider.TASK_LISTTYPE_COLUMN, type.ordinal());
         contentValues.put(TasksProvider.TASK_TOSYNCH_COLUMN, 1);
 
         ContentResolver cr = mContext.getContentResolver();

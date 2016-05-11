@@ -9,7 +9,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
@@ -43,8 +42,10 @@ public class TasksProvider extends ContentProvider {
     public static final int TASK_POMODOROS_COLUMN_POSITION = 4;
     public static final String TASK_TIMESPENT_COLUMN = "TimeSpent";
     public static final int TASK_TIMESPENT_COLUMN_POSITION = 5;
+    public static final String TASK_LISTTYPE_COLUMN = "ListType";
+    public static final int TASK_LISTTYPE_COLUMN_POSITION = 6;
     public static final String TASK_TOSYNCH_COLUMN = "ToSynch";
-    public static final int TASK_TOSYNCH_COLUMN_POSITION = 6;
+    public static final int TASK_TOSYNCH_COLUMN_POSITION = 7;
     public static final int ALL_TASK = 0;
     public static final int SINGLE_TASK = 1;
 
@@ -72,6 +73,7 @@ public class TasksProvider extends ContentProvider {
                                 TASK_LIST_COLUMN + " text, " +
                                 TASK_POMODOROS_COLUMN + " integer, " +
                                 TASK_TIMESPENT_COLUMN + " integer, " +
+                                TASK_LISTTYPE_COLUMN + " integer, " +
                                 TASK_TOSYNCH_COLUMN + " integer" +
                                 ")";
     
@@ -201,28 +203,6 @@ public class TasksProvider extends ContentProvider {
         } else {
             return null;
         }
-    }
-
-    public int bulkInsert(Uri uri, ContentValues[] values){
-        int numInserted = 0;
-
-        SQLiteDatabase db = myOpenHelper.getWritableDatabase();
-        db.beginTransaction();
-        String table = getTableNameFromUri(uri);
-        try {
-            for (ContentValues cv : values) {
-                long newID = db.insertOrThrow(table, null, cv);
-                if (newID <= 0) {
-                    throw new SQLException("Failed to insert row into " + uri);
-                }
-            }
-            db.setTransactionSuccessful();
-            getContext().getContentResolver().notifyChange(uri, null);
-            numInserted = values.length;
-        } finally {
-            db.endTransaction();
-        }
-        return numInserted;
     }
 
     @Override

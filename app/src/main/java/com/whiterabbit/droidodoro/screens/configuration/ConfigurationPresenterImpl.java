@@ -1,6 +1,7 @@
 package com.whiterabbit.droidodoro.screens.configuration;
 
 import com.whiterabbit.droidodoro.R;
+import com.whiterabbit.droidodoro.storage.ListType;
 import com.whiterabbit.droidodoro.trelloclient.model.Board;
 import com.whiterabbit.droidodoro.trelloclient.model.Card;
 import com.whiterabbit.droidodoro.trelloclient.model.TrelloList;
@@ -182,29 +183,32 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
          */
         Observable<Integer> o = Observable.fromCallable(mProviderClient::removeAllTask);
         mView.showProgress(R.string.config_fetching_lists, true);
+        mPreferences.setTodoList(todoId);
+        mPreferences.setDoingList(doingId);
+        mPreferences.setDoneList(doneId);
         mCardsSubscription = o.flatMap(i -> mTrello.getCards(todoId))
-                .map(t -> this.storeCards(t, todoId))
+                .map(t -> this.storeCards(t, todoId, ListType.TODO))
                 .flatMap(b -> mTrello.getCards(doingId))
-                .map(d ->  this.storeCards(d, doingId))
+                .map(d ->  this.storeCards(d, doingId, ListType.DOING))
                 .flatMap(b -> mTrello.getCards(doneId))
-                .map(done ->  this.storeCards(done, doneId))
+                .map(done ->  this.storeCards(done, doneId, ListType.DONE))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(b -> {
-                    mPreferences.setTodoList(todoId);
-                    mPreferences.setDoingList(doingId);
-                    mPreferences.setDoneList(doneId);
                     mPreferences.saveTaskId("");
                     this.onSetupComplete();
                 }, e -> {
                     this.onTrelloError(e.getMessage());
                     mView.showProgress(0, false);
+                    mPreferences.setTodoList("");
+                    mPreferences.setDoingList("");
+                    mPreferences.setDoneList("");
                     },
                     () -> mView.showProgress(0, false));
     }
 
-    private boolean storeCards(List<Card> cards, String listId) {
-        mProviderClient.addCards(cards, listId) ;
+    private boolean storeCards(List<Card> cards, String listId, ListType type) {
+        mProviderClient.addCards(cards, listId, type) ;
         return true;
     }
 

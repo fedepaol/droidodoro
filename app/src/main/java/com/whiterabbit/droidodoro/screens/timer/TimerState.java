@@ -1,6 +1,7 @@
 package com.whiterabbit.droidodoro.screens.timer;
 
 import com.whiterabbit.droidodoro.storage.KeyValueStorage;
+import com.whiterabbit.droidodoro.storage.ListType;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
 import rx.Observable;
@@ -66,7 +67,8 @@ public abstract class TimerState implements TimerPresenter {
     public void onBackPressed() {
         mPreferences.saveTaskId("");
         Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(mView.getTaskId(),
-                mPreferences.getTodoList()))
+                mPreferences.getTodoList(),
+                ListType.TODO))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();

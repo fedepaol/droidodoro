@@ -2,6 +2,7 @@ package com.whiterabbit.droidodoro.screens.timer;
 
 
 import com.whiterabbit.droidodoro.storage.KeyValueStorage;
+import com.whiterabbit.droidodoro.storage.ListType;
 import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
 import rx.Observable;
@@ -33,7 +34,7 @@ public class TimerStateFinished extends TimerState {
     @Override
     public void onDonePressed() {
         Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(mView.getTaskId(),
-                mPreferences.getDoneList()))
+                mPreferences.getDoneList(), ListType.DONE))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(i -> {},

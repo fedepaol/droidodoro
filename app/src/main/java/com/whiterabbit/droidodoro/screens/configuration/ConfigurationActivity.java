@@ -13,7 +13,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
 
-        if (getFragmentManager().findFragmentById(R.id.config_fragment) == null) {
+        if (savedInstanceState == null && getFragmentManager().findFragmentById(R.id.config_fragment) == null) {
             Fragment f = new ConfigurationFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.config_fragment, f)
                     .commit();

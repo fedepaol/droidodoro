@@ -92,12 +92,17 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     @Override
     public void toggleListsSpinners(boolean enable) {
-
+        int visibility = enable ? View.VISIBLE : View.INVISIBLE;
+        mBoardsSpinner.setVisibility(visibility);
+        mTodoSpinner.setVisibility(visibility);
+        mDoingSpinner.setVisibility(visibility);
+        mDoneSpinner.setVisibility(visibility);
     }
 
     @Override
     public void toggleImport(boolean enable) {
-        mImport.setEnabled(enable);
+        int visibility = enable ? View.VISIBLE : View.INVISIBLE;
+        mImport.setVisibility(visibility);
     }
 
     private void setSpinnerValues(Spinner s, String[] values) {
