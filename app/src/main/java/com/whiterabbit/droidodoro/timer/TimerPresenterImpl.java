@@ -181,7 +181,6 @@ public class TimerPresenterImpl implements TimerPresenter {
             public void onTick(long millisUntilFinished) {
                 mView.setCurrentTime(millisUntilFinished / 1000);
                 mPreferences.setTimeToGo(millisUntilFinished / 1000); // TODO This can be optimized
-                Log.d("FEDE", "To go " + millisUntilFinished / 1000);
             }
 
             public void onFinish() {

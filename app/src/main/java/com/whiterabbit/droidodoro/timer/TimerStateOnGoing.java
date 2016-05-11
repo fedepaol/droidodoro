@@ -63,7 +63,6 @@ public class TimerStateOnGoing extends TimerState {
             if (spent >= FIVE_MINUTES) {
                 mPresenter.setState(TimerPresenterImpl.TimerStateEnum.FINISHED);
             } else {
-                Log.d("FEDE", "resuming " + timeToGo + " " + spent + " " + (timeToGo - spent));
                 mPresenter.startCountdown(FIVE_MINUTES - spent);
             }
         }
