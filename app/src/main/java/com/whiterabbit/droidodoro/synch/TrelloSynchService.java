@@ -27,12 +27,11 @@ public class TrelloSynchService extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
-        Log.d("SYNCH", "Started synch");
         PreferencesUtils preferences = new PreferencesUtils(this);
         TrelloClient trello = new TrelloClient(preferences);
 
         Cursor tasksToSynch = TaskProviderClientExt.getTasksToSynch(this);
-        if (tasksToSynch.getCount() == 0) {
+        if (tasksToSynch.getCount() == 0) { // quite strange
             tasksToSynch.close();
             return GcmNetworkManager.RESULT_SUCCESS;
         }

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import com.whiterabbit.droidodoro.R;
 import com.whiterabbit.droidodoro.Utils;
@@ -31,7 +32,17 @@ public class UpdatePomodorosService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         TaskProviderClientExt client = new TaskProviderClientExt(this);
         PreferencesUtils prefs = new PreferencesUtils(this);
-        Cursor c = client.getTask(prefs.getTimerTaskId());
+        String taskId = prefs.getTimerTaskId();
+        if (taskId.equals("")) {
+            Log.e("Droidodoro", "End task broadcast on empty task");
+            return;
+        }
+        Cursor c = client.getTask(taskId);
+        if (c.getCount() <= 0) {
+            Log.e("Droidodoro", "End task broadcast on not existent task " + taskId);
+            c.close();
+            return;
+        }
         c.moveToFirst();
         int timeColumnIndx = c.getColumnIndex(TasksProvider.TASK_TIMESPENT_COLUMN);
         long seconds = c.getLong(timeColumnIndx);
