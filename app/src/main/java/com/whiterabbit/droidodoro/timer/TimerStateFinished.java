@@ -27,8 +27,7 @@ public class TimerStateFinished extends TimerState {
         mView.toggleTimerGoingControls(false);
         mView.setCurrentTime(0);
         mPresenter.resetTimer();
-
-
+        mPresenter.reloadValues();
     }
 
     @Override

@@ -35,6 +35,7 @@
         </service>
 
         <receiver android:name=".synch.AlarmReceiver"/>
+        <service android:name=".synch.UpdatePomodorosService"/>
     </application>
 
 </manifest>

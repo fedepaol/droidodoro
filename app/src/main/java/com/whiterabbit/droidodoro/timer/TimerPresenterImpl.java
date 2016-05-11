@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.CountDownTimer;
-import android.util.Log;
 
 import com.whiterabbit.droidodoro.Utils;
 import com.whiterabbit.droidodoro.storage.PreferencesUtils;
@@ -16,7 +15,6 @@ import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 import com.whiterabbit.droidodoro.storage.TasksProvider;
 import com.whiterabbit.droidodoro.synch.AlarmReceiver;
 
-import java.util.Date;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

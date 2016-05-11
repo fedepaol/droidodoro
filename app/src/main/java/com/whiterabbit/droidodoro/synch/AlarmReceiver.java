@@ -17,20 +17,9 @@ import com.whiterabbit.droidodoro.tasks.TasksActivity;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent i = new Intent(context, TasksActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pIntent = PendingIntent.getActivity(context, 0, i, 0);
-
-        NotificationCompat.Builder b = new NotificationCompat.Builder(context);
-        b.setContentTitle(context.getString(R.string.pomodoro_finished))
-                .setAutoCancel(true)
-                .setContentText(context.getString(R.string.pomodoro_task_finished))
-                .setSmallIcon(android.R.drawable.ic_notification_clear_all)
-                .setContentIntent(pIntent);
-
-        Notification n = b.build();
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(0, n);
+        // can't update the db from here since we are in main thread. Need to be fast,
+        // delegate the hard work to an intent service
+        Intent i = new Intent(context, UpdatePomodorosService.class);
+        context.startService(i);
     }
 }
