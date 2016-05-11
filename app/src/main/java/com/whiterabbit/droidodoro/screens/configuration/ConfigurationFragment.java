@@ -56,7 +56,7 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View res = inflater.inflate(R.layout.configuration, container, false);
+        View res = inflater.inflate(R.layout.configuration_fragment, container, false);
         ButterKnife.bind(this, res);
         mBoardsSpinner.setOnItemSelectedListener(this);
         return res;

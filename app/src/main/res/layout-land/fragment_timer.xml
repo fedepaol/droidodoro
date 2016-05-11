@@ -6,16 +6,21 @@
     tools:context=".screens.timer.TimerFragment">
 
     <TextView
-        style="@style/TimerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/timer_task_name"/>
     <TextView
-        style="@style/TimerText.Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/timer_tot_time"/>
     <TextView
-        style="@style/TimerText.Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/timer_tot_pomodoros"/>
+
     <TextView
-        style="@style/TimerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/timer_current_time"/>
 
 
@@ -24,7 +29,6 @@
         android:layout_height="wrap_content"
         >
         <LinearLayout
-            android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -36,7 +40,6 @@
                 android:id="@+id/timer_start_button"/>
         </LinearLayout>
         <LinearLayout
-            android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -53,7 +56,6 @@
                 android:id="@+id/timer_stop_button"/>
         </LinearLayout>
         <LinearLayout
-            android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -75,7 +77,6 @@
                 android:id="@+id/timer_long_break_button"/>
         </LinearLayout>
         <LinearLayout
-            android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

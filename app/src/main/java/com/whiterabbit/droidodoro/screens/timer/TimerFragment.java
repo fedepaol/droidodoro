@@ -106,8 +106,9 @@ public class TimerFragment extends Fragment implements TimerView, TimerActivity.
     @Override
     public void setTaskValues(String title, int pomodoros, long totalTime) {
         mTaskName.setText(title);
-        mTotPomodoros.setText(String.valueOf(pomodoros));
-        mTotTimeSpent.setText(Utils.getTimeFromSeconds(totalTime));
+        mTotPomodoros.setText(String.format(getString(R.string.tot_pomodoros), pomodoros));
+        mTotTimeSpent.setText(String.format(getString(R.string.time_spent),
+                                                      Utils.getTimeFromSeconds(totalTime)));
     }
 
     @Override

@@ -71,8 +71,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         int pomodorosIndx = mTasks.getColumnIndex(TasksProvider.TASK_POMODOROS_COLUMN);
         long pomodoros = mTasks.getLong(pomodorosIndx);
         holder.mName.setText(name);
-        holder.mTimeSpent.setText(Utils.getTimeFromSeconds(seconds));
-        holder.mPomodoros.setText(String.valueOf(pomodoros));
+        holder.mTimeSpent.setText(String.format(mContext.getString(R.string.time_spent),
+                                                Utils.getTimeFromSeconds(seconds)));
+        holder.mPomodoros.setText(String.format(mContext.getString(R.string.tot_pomodoros), pomodoros));
         int idIndext = mTasks.getColumnIndex(TasksProvider.TASK_IDENTIFIER_COLUMN);
         holder.mTaskId = mTasks.getString(idIndext);
     }
