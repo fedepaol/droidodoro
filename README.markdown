@@ -15,7 +15,11 @@ Once a task is moved is also synched with trello. The done tasks receive a comme
 
 ## Things worth noting
 
-### The login / interaction with Trello
+Two of three screens (namely configuration and timer) use the MVP pattern.
+Each asynchronous interaction with rest / the storage is done via RxJava.
+The components are injected using dagger 2.
+
+### The login / the interaction with the Trello rest api
 
 ### The synchronization with Trello
 
