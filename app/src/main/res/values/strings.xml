@@ -28,5 +28,6 @@
     <string name="trello_comment">%1$d pomodoros, %2$s time spent</string>
     <string name="pomodoro_finished">Pomodoro</string>
     <string name="pomodoro_task_finished">Your task is finished</string>
+    <string name="authentication_failed">Authentication Failed</string>
 
 </resources>

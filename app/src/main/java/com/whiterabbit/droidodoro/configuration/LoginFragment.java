@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -18,19 +20,13 @@ import com.whiterabbit.droidodoro.constants.Keys;
 
 
 public class LoginFragment extends DialogFragment {
-    public interface LoginResult {
-        void onTokenFound(String token);
-        void onLoginError(String message);
-    }
 
-    private LoginResult mResultListener;
     private WebView webViewOauth;
     private ProgressBar progressBar;
     private boolean mAuthFound;
 
-    public static LoginFragment newInstance(LoginResult resListener) {
+    public static LoginFragment newInstance() {
         LoginFragment f = new LoginFragment();
-        f.setReceivedInterface(resListener);
         return f;
     }
 
@@ -55,10 +51,6 @@ public class LoginFragment extends DialogFragment {
         }
     }
 
-    public void setReceivedInterface(LoginResult resultListener) {
-        mResultListener = resultListener;
-    }
-
     private class MyWebViewClient extends WebViewClient {
 
         private boolean parseUrl(String url) {
@@ -70,7 +62,8 @@ public class LoginFragment extends DialogFragment {
                 String token = fragment.split("=")[1];
                 if (token != null) {
                     mAuthFound = true;
-                    mResultListener.onTokenFound(token);
+                    ConfigurationFragment target = (ConfigurationFragment) getTargetFragment();
+                    target.onTokenFound(token);
                     return true;
                 }
             }
@@ -93,12 +86,16 @@ public class LoginFragment extends DialogFragment {
             super.onPageFinished(view, url);
             progressBar.setVisibility(View.INVISIBLE);
         }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            notifyAuthenticationFailed();
+        }
     }
 
     private void notifyAuthenticationFailed() {
-        if (mResultListener != null) {
-            mResultListener.onLoginError("Could not verify the auth token, wrong callback url");
-        }
+        ConfigurationFragment target = (ConfigurationFragment) getTargetFragment();
+        target.onLoginError(getString(R.string.authentication_failed));
     }
 
     @Override

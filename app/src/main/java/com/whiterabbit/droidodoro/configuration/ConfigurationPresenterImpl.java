@@ -149,7 +149,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
 
     @Override
     public void onTokenError(String error) {
-
+        mView.notifyError(error);
     }
 
     @Override

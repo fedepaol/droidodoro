@@ -27,7 +27,6 @@ import butterknife.OnClick;
 
 
 public class ConfigurationFragment extends Fragment implements ConfigurationView,
-                                                               LoginFragment.LoginResult,
                                                                AdapterView.OnItemSelectedListener {
     @BindView(R.id.configuration_login)  Button mLogin;
     @BindView(R.id.configuration_import) Button mImport;
@@ -143,7 +142,8 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
 
     @Override
     public void askForToken() {
-        LoginFragment l = LoginFragment.newInstance(this);
+        LoginFragment l = LoginFragment.newInstance();
+        l.setTargetFragment(this, 0);
         l.show(getActivity().getSupportFragmentManager(), "logindialog");
     }
 
@@ -167,12 +167,10 @@ public class ConfigurationFragment extends Fragment implements ConfigurationView
         return mDoneSpinner.getSelectedItemPosition();
     }
 
-    @Override
     public void onTokenFound(String token) {
         mPresenter.onTokenReceived(token);
     }
 
-    @Override
     public void onLoginError(String message) {
         mPresenter.onTokenError(message);
     }
