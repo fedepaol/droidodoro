@@ -51,16 +51,16 @@ public class TimerStateOnGoing extends TimerState {
 
         if (isFirstStart(timeToGo, started)) { // case 1
             mKeyValueStorage.setStartedTime(Utils.getNowMillis() / 1000); // First start
-            mPresenter.startCountdown(FIVE_MINUTES);
+            mPresenter.startCountdown(FIFTEEN_MINUTES);
         } else if (isResume(timeToGo, started)){ // case 2
             mPresenter.startCountdown(timeToGo);
         } else {    // both are filled
             long now = Utils.getNowMillis() / 1000;
             long spent = now - started;
-            if (spent >= FIVE_MINUTES) {
+            if (spent >= FIFTEEN_MINUTES) {
                 mPresenter.setState(TimerPresenterImpl.TimerStateEnum.FINISHED);
             } else {
-                mPresenter.startCountdown(FIVE_MINUTES - spent);
+                mPresenter.startCountdown(FIFTEEN_MINUTES - spent);
             }
         }
     }
@@ -70,7 +70,7 @@ public class TimerStateOnGoing extends TimerState {
         final MediaPlayer mp = MediaPlayer.create(mView.getContext(), R.raw.applause);
         mp.start();
         Observable.fromCallable(() -> mProviderClient.updateTimeAndPomodoros(mView.getTaskId(),
-                FIVE_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1))
+                FIFTEEN_MINUTES + mPresenter.getTimeSpent(), mPresenter.getPomodoros() + 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(i -> {},
@@ -90,7 +90,7 @@ public class TimerStateOnGoing extends TimerState {
     @Override
     public void onStopPressed() {
         Observable.fromCallable(() -> mProviderClient.updateTime(mView.getTaskId(),
-                                        FIVE_MINUTES - mKeyValueStorage.getTimeToGo() + mPresenter.getTimeSpent()))
+                                        FIFTEEN_MINUTES - mKeyValueStorage.getTimeToGo() + mPresenter.getTimeSpent()))
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(i -> {},
@@ -99,7 +99,7 @@ public class TimerStateOnGoing extends TimerState {
                                                 mPresenter.stopCountDown();
                                                 mPresenter.reloadValues();
                                                 mPresenter.resetTimer();
-                                                mKeyValueStorage.setTimeToGo(FIVE_MINUTES);
+                                                mKeyValueStorage.setTimeToGo(FIFTEEN_MINUTES);
                                                 mPresenter.setState(TimerPresenterImpl.TimerStateEnum.STOPPED);
                                             });
     }

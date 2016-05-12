@@ -37,7 +37,7 @@ public class TimerStatePaused extends TimerState {
     @Override
     public void onStopPressed() {
         Observable.fromCallable(() -> mProviderClient.updateTime(mView.getTaskId(),
-                FIVE_MINUTES - mKeyValueStorage.getTimeToGo() + mPresenter.getTimeSpent()))
+                FIFTEEN_MINUTES - mKeyValueStorage.getTimeToGo() + mPresenter.getTimeSpent()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(i -> {},
@@ -46,7 +46,7 @@ public class TimerStatePaused extends TimerState {
                             mPresenter.stopCountDown();
                             mPresenter.reloadValues();
                             mPresenter.resetTimer();
-                            mKeyValueStorage.setTimeToGo(FIVE_MINUTES);
+                            mKeyValueStorage.setTimeToGo(FIFTEEN_MINUTES);
                             mPresenter.setState(TimerPresenterImpl.TimerStateEnum.STOPPED);
                         });
     }

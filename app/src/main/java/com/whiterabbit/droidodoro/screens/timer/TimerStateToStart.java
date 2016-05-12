@@ -26,6 +26,6 @@ public class TimerStateToStart extends TimerState {
         mView.toggleBreakControls(false);
         mView.toggleTimerGoingControls(false);
         mKeyValueStorage.saveTaskId("");
-        mView.setCurrentTime(FIVE_MINUTES);
+        mView.setCurrentTime(FIFTEEN_MINUTES);
     }
 }

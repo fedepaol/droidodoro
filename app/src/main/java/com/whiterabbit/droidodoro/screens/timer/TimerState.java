@@ -13,7 +13,7 @@ import rx.schedulers.Schedulers;
    the various events depending on the state the timer is currently on
  */
 public abstract class TimerState implements TimerPresenter {
-    static public final long FIVE_MINUTES = 15; // TODO Change to 5 minutes
+    static public final long FIFTEEN_MINUTES = 15 /* * 60 */; // TODO Change to 15 minutes
 
     TimerView mView;
     TimerPresenterImpl mPresenter;

@@ -50,7 +50,7 @@ public class UpdatePomodorosService extends IntentService {
         int pomodorosIndx = c.getColumnIndex(TasksProvider.TASK_POMODOROS_COLUMN);
         long pomodoros = c.getLong(pomodorosIndx);
         c.close();
-        client.updateTimeAndPomodoros(prefs.getTimerTaskId(),  TimerState.FIVE_MINUTES + seconds, pomodoros + 1);
+        client.updateTimeAndPomodoros(prefs.getTimerTaskId(),  TimerState.FIFTEEN_MINUTES + seconds, pomodoros + 1);
 
         Intent i = new Intent(this, TasksActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
