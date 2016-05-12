@@ -37,7 +37,7 @@ public class TimerStateOnGoing extends TimerState {
         mView.toggleBreakControls(false);
         mView.toggleTimerGoingControls(true);
         mView.setPauseButtonText(R.string.timer_pause);
-        mPreferences.saveTaskId(mView.getTaskId()); // as soon as I enter in this state, taskid is saved
+        mKeyValueStorage.saveTaskId(mView.getTaskId()); // as soon as I enter in this state, taskid is saved
         mPresenter.removeAlarm();
         mBackWasPressed = false;
 
@@ -46,11 +46,11 @@ public class TimerStateOnGoing extends TimerState {
         // 2 - the user is coming back from pause
         // 3 - the user got back to the app and the timer was supposed to run
 
-        long timeToGo = mPreferences.getTimeToGo();
-        long started = mPreferences.getStartedTime();
+        long timeToGo = mKeyValueStorage.getTimeToGo();
+        long started = mKeyValueStorage.getStartedTime();
 
         if (isFirstStart(timeToGo, started)) { // case 1
-            mPreferences.setStartedTime(Utils.getNowMillis() / 1000); // First start
+            mKeyValueStorage.setStartedTime(Utils.getNowMillis() / 1000); // First start
             mPresenter.startCountdown(FIVE_MINUTES);
         } else if (isResume(timeToGo, started)){ // case 2
             mPresenter.startCountdown(timeToGo);
@@ -90,7 +90,7 @@ public class TimerStateOnGoing extends TimerState {
     @Override
     public void onStopPressed() {
         Observable.fromCallable(() -> mProviderClient.updateTime(mView.getTaskId(),
-                                        FIVE_MINUTES - mPreferences.getTimeToGo() + mPresenter.getTimeSpent()))
+                                        FIVE_MINUTES - mKeyValueStorage.getTimeToGo() + mPresenter.getTimeSpent()))
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(i -> {},
@@ -99,7 +99,7 @@ public class TimerStateOnGoing extends TimerState {
                                                 mPresenter.stopCountDown();
                                                 mPresenter.reloadValues();
                                                 mPresenter.resetTimer();
-                                                mPreferences.setTimeToGo(FIVE_MINUTES);
+                                                mKeyValueStorage.setTimeToGo(FIVE_MINUTES);
                                                 mPresenter.setState(TimerPresenterImpl.TimerStateEnum.STOPPED);
                                             });
     }
@@ -113,7 +113,7 @@ public class TimerStateOnGoing extends TimerState {
     @Override
     public void onPause() {
         if (!mBackWasPressed) // awful hack to check if the app is being closed
-            mPresenter.setAlarm(mPreferences.getTimeToGo());
+            mPresenter.setAlarm(mKeyValueStorage.getTimeToGo());
         super.onPause();
     }
 }

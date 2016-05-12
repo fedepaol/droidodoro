@@ -25,8 +25,8 @@ public class TrelloSynchService extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
-        KeyValueStorage preferences = new KeyValueStorage(this);
-        TrelloClient trello = new TrelloClient(preferences);
+        KeyValueStorage keyValueStorage = new KeyValueStorage(this);
+        TrelloClient trello = new TrelloClient(keyValueStorage);
 
         Cursor tasksToSynch = TaskProviderClientExt.getTasksToSynch(this);
         if (tasksToSynch.getCount() == 0) { // quite strange
@@ -47,7 +47,7 @@ public class TrelloSynchService extends GcmTaskService {
 
             try {
                 trello.updateCard(taskId, list);
-                if (list.equals(preferences.getDoneList())) {
+                if (list.equals(keyValueStorage.getDoneList())) {
                     String comment = buildComment(seconds, pomodoros);
                     trello.setCommentToCard(taskId, comment);
                 }

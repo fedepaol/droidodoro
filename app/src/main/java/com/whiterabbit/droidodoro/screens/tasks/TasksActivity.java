@@ -29,7 +29,7 @@ public class TasksActivity extends AppCompatActivity {
     @BindView(R.id.tasks_activity_pager) ViewPager mPager;
 
     @Inject
-    KeyValueStorage mPreferences;
+    KeyValueStorage mKeyValueStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +43,9 @@ public class TasksActivity extends AppCompatActivity {
         mPager.setAdapter(pagerAdapter);
         mTabs.setupWithViewPager(mPager);
 
-        if (mPreferences.needsToConfigure()) {
+        if (mKeyValueStorage.needsToConfigure()) {
             goToConfiguration();
-        } else if (mPreferences.isTimerOngoing()) {
+        } else if (mKeyValueStorage.isTimerOngoing()) {
             goToTimer();
         }
     }
@@ -57,7 +57,7 @@ public class TasksActivity extends AppCompatActivity {
 
     private void goToTimer() {
         Intent i = new Intent(this, TimerActivity.class);
-        i.putExtra(TimerActivity.TASK_PARAM, mPreferences.getTimerTaskId());
+        i.putExtra(TimerActivity.TASK_PARAM, mKeyValueStorage.getTimerTaskId());
         startActivity(i);
     }
 

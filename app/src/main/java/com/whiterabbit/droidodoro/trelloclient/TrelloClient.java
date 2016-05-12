@@ -44,7 +44,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
 public class TrelloClient {
-    KeyValueStorage mPreferences;
+    KeyValueStorage mKeyValueStorage;
 
     private TrelloService mClient;
 
@@ -55,13 +55,13 @@ public class TrelloClient {
     }
 
     public TrelloClient(KeyValueStorage preferences) {
-        mPreferences = preferences;
+        mKeyValueStorage = preferences;
         OkHttpClient okClient = new OkHttpClient.Builder()
                                 .addInterceptor(chain -> {
                                     Request original = chain.request();
                                     HttpUrl newUrl = original.url().newBuilder()
                                             .addQueryParameter("key", BuildConfig.TRELLO_API_KEY)
-                                            .addQueryParameter("token", mPreferences.getAuthToken()).build();
+                                            .addQueryParameter("token", mKeyValueStorage.getAuthToken()).build();
 
                                     Request enhancedRequest = original.newBuilder()
                                             .url(newUrl).build();

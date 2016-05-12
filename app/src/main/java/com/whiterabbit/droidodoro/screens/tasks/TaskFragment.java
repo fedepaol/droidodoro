@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 public abstract class TaskFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>,TasksAdapter.TaskSelectedCallback {
     @Inject
-    KeyValueStorage mPreferences;
+    KeyValueStorage mKeyValueStorage;
     @Inject
     Context mContext;
     @Inject

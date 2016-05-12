@@ -5,7 +5,6 @@ import android.content.Intent;
 
 import com.whiterabbit.droidodoro.screens.timer.TimerActivity;
 import com.whiterabbit.droidodoro.storage.ListType;
-import com.whiterabbit.droidodoro.storage.TaskProviderClientExt;
 
 import rx.Observable;
 
@@ -30,7 +29,7 @@ public class TodoTasksFragment extends TaskFragment {
     public void onTaskSelected(String taskId) {
         mSubscription = Observable.fromCallable(() ->
                                         mProviderClient.moveTaskToOtherList(taskId,
-                                                                            mPreferences.getDoingList(),
+                                                                            mKeyValueStorage.getDoingList(),
                                                                             ListType.DOING))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

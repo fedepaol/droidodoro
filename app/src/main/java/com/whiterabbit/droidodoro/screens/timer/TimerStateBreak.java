@@ -21,8 +21,8 @@ public class TimerStateBreak extends TimerState {
         mView.toggleTimerFinishedControls(false);
         mView.toggleBreakControls(true);
         mView.toggleTimerGoingControls(false);
-        mPreferences.setStartedTime(Utils.getNowMillis() / 1000);
-        mPresenter.startCountdown(mPreferences.getTimeToGo());
+        mKeyValueStorage.setStartedTime(Utils.getNowMillis() / 1000);
+        mPresenter.startCountdown(mKeyValueStorage.getTimeToGo());
     }
 
     @Override

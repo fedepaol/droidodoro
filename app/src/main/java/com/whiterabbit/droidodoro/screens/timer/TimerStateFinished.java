@@ -34,24 +34,24 @@ public class TimerStateFinished extends TimerState {
     @Override
     public void onDonePressed() {
         Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(mView.getTaskId(),
-                mPreferences.getDoneList(), ListType.DONE))
+                mKeyValueStorage.getDoneList(), ListType.DONE))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(i -> {},
                         e -> {},
                         () -> mView.closeView());
-        mPreferences.saveTaskId("");
+        mKeyValueStorage.saveTaskId("");
     }
 
     @Override
     public void onShortBreakPressed() {
-        mPreferences.setTimeToGo(5 * 60);
+        mKeyValueStorage.setTimeToGo(5 * 60);
         mPresenter.setState(TimerPresenterImpl.TimerStateEnum.BREAK);
     }
 
     @Override
     public void onLongBreakPressed() {
-        mPreferences.setTimeToGo(15 * 60);
+        mKeyValueStorage.setTimeToGo(15 * 60);
         mPresenter.setState(TimerPresenterImpl.TimerStateEnum.BREAK);
     }
 

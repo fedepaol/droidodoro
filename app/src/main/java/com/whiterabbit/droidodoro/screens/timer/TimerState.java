@@ -17,7 +17,7 @@ public abstract class TimerState implements TimerPresenter {
 
     TimerView mView;
     TimerPresenterImpl mPresenter;
-    KeyValueStorage mPreferences;
+    KeyValueStorage mKeyValueStorage;
     TaskProviderClientExt mProviderClient;
 
     public TimerState(TimerView view,
@@ -26,7 +26,7 @@ public abstract class TimerState implements TimerPresenter {
                       TaskProviderClientExt client) {
         mView = view;
         mPresenter = presenter;
-        mPreferences = preferences;
+        mKeyValueStorage = preferences;
         mProviderClient = client;
     }
 
@@ -65,9 +65,9 @@ public abstract class TimerState implements TimerPresenter {
 
     @Override
     public void onBackPressed() {
-        mPreferences.saveTaskId("");
+        mKeyValueStorage.saveTaskId("");
         Observable.fromCallable(() -> mProviderClient.moveTaskToOtherList(mView.getTaskId(),
-                mPreferences.getTodoList(),
+                mKeyValueStorage.getTodoList(),
                 ListType.TODO))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -40,7 +40,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    KeyValueStorage providePrefUtils() {
+    KeyValueStorage provideKeyValueStorage() {
         return new KeyValueStorage(mApp);
     }
 

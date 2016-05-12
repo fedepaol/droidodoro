@@ -31,7 +31,7 @@ public class TimerPresenterImpl implements TimerPresenter {
     }
 
     private TimerView mView;
-    private KeyValueStorage mPreferences;
+    private KeyValueStorage mKeyValueStorage;
     private TaskProviderClientExt mProviderClient;
     private Context mContext;
 
@@ -54,7 +54,7 @@ public class TimerPresenterImpl implements TimerPresenter {
                               TaskProviderClientExt c,
                               Context context) {
         mView = v;
-        mPreferences = u;
+        mKeyValueStorage = u;
         mProviderClient = c;
         mContext = context;
         mStateToStart = new TimerStateToStart(mView, this, u, c);
@@ -96,10 +96,10 @@ public class TimerPresenterImpl implements TimerPresenter {
     @Override
     public void onResume() {
         reloadValues();
-        if (mPreferences.getTimerTaskId().equals("")) {
+        if (mKeyValueStorage.getTimerTaskId().equals("")) {
             setState(TimerStateEnum.STOPPED);
         } else {
-            setState(mPreferences.getTimerState());
+            setState(mKeyValueStorage.getTimerState());
         }
     }
 
@@ -164,20 +164,20 @@ public class TimerPresenterImpl implements TimerPresenter {
             mState.onExitState();
         }
         mState = getTimerStateFromEnum(e);
-        mPreferences.setTimerState(e);
+        mKeyValueStorage.setTimerState(e);
         mState.onEnterState();
     }
 
     public void resetTimer() {
-        mPreferences.setStartedTime(0);
-        mPreferences.setTimeToGo(0);
+        mKeyValueStorage.setStartedTime(0);
+        mKeyValueStorage.setTimeToGo(0);
     }
 
     public void startCountdown(long howLong) {
         mCountDownTimer = new CountDownTimer(howLong * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 mView.setCurrentTime(millisUntilFinished / 1000);
-                mPreferences.setTimeToGo(millisUntilFinished / 1000); // TODO This can be optimized
+                mKeyValueStorage.setTimeToGo(millisUntilFinished / 1000); // TODO This can be optimized
             }
 
             public void onFinish() {

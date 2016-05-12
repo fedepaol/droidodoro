@@ -39,7 +39,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
     }
 
     private ConfigurationView mView;
-    private KeyValueStorage mPreferences;
+    private KeyValueStorage mKeyValueStorage;
     private TrelloClient mTrello;
     private ArrayList<BoardList> mBoards;
     private Subscription mBoardsSubscription;
@@ -51,7 +51,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
                                       KeyValueStorage prefUtils,
                                       TaskProviderClientExt providerClient) {
         mView = v;
-        mPreferences = prefUtils;
+        mKeyValueStorage = prefUtils;
         mTrello = trello;
         mBoards = new ArrayList<>();
         mProviderClient = providerClient;
@@ -123,7 +123,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
 
     @Override
     public void onResume() {
-        if (mPreferences.getAuthToken().equals("")) {
+        if (mKeyValueStorage.getAuthToken().equals("")) {
             initNoToken();
         } else {
             initToken();
@@ -142,7 +142,7 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
 
     @Override
     public void onTokenReceived(String token) {
-        mPreferences.setAuthToken(token);
+        mKeyValueStorage.setAuthToken(token);
         initToken();
     }
 
@@ -183,9 +183,9 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
          */
         Observable<Integer> o = Observable.fromCallable(mProviderClient::removeAllTask);
         mView.showProgress(R.string.config_fetching_lists, true);
-        mPreferences.setTodoList(todoId);
-        mPreferences.setDoingList(doingId);
-        mPreferences.setDoneList(doneId);
+        mKeyValueStorage.setTodoList(todoId);
+        mKeyValueStorage.setDoingList(doingId);
+        mKeyValueStorage.setDoneList(doneId);
         mCardsSubscription = o.flatMap(i -> mTrello.getCards(todoId))
                 .map(t -> this.storeCards(t, todoId, ListType.TODO))
                 .flatMap(b -> mTrello.getCards(doingId))
@@ -195,14 +195,14 @@ public class ConfigurationPresenterImpl implements ConfigurationPresenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(b -> {
-                    mPreferences.saveTaskId("");
+                    mKeyValueStorage.saveTaskId("");
                     this.onSetupComplete();
                 }, e -> {
                     this.onTrelloError(e.getMessage());
                     mView.showProgress(0, false);
-                    mPreferences.setTodoList("");
-                    mPreferences.setDoingList("");
-                    mPreferences.setDoneList("");
+                    mKeyValueStorage.setTodoList("");
+                    mKeyValueStorage.setDoingList("");
+                    mKeyValueStorage.setDoneList("");
                     },
                     () -> mView.showProgress(0, false));
     }
