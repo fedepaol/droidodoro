@@ -7,6 +7,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
@@ -55,7 +57,9 @@ public class UpdatePomodorosService extends IntentService {
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, i, 0);
 
         NotificationCompat.Builder b = new NotificationCompat.Builder(this);
-        b.setContentTitle(this.getString(R.string.pomodoro_finished))
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        b.setSound(notification)
+                .setContentTitle(this.getString(R.string.pomodoro_finished))
                 .setAutoCancel(true)
                 .setContentText(this.getString(R.string.pomodoro_task_finished))
                 .setSmallIcon(android.R.drawable.ic_notification_clear_all)
