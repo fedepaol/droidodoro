@@ -1,6 +1,7 @@
 package com.whiterabbit.droidodoro;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import static java.lang.String.format;
 
@@ -9,7 +10,7 @@ public class Utils {
         long hours = seconds / (3600);
         long minutes = seconds / 60;
         long sec = seconds % 60;
-        return format("%02d:%02d:%02d", hours, minutes, sec);
+        return format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, sec);
     }
 
     public static long getNowMillis() {

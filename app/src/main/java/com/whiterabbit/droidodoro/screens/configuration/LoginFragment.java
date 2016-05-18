@@ -1,5 +1,6 @@
 package com.whiterabbit.droidodoro.screens.configuration;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -98,6 +99,7 @@ public class LoginFragment extends DialogFragment {
         target.onLoginError(getString(R.string.authentication_failed));
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onViewCreated(View arg0, Bundle arg1) {
         super.onViewCreated(arg0, arg1);

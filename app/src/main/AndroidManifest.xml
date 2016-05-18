@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme">
         <provider
             android:name=".storage.TasksProvider"
+            android:exported="false"
             android:authorities="com.whiterabbit.droidodoro" />
         <activity android:name=".screens.configuration.ConfigurationActivity"/>
         <activity

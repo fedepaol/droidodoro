@@ -13,7 +13,6 @@
     <string name="tasks_done">Done</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="timer_start">Start</string>
     <string name="timer_pause">Pause</string>
     <string name="timer_restart">Restart</string>
@@ -30,7 +29,6 @@
     <string name="pomodoro_task_finished">Your task is finished</string>
     <string name="authentication_failed">Authentication Failed</string>
     <string name="configuration_boards_text">Boards</string>
-    <string name="configuration_todo_text">TODO</string>
     <string name="time_spent">Tot Time Spent: %1$s</string>
     <string name="tot_pomodoros">Tot Pomodoros: %1$d</string>
 
